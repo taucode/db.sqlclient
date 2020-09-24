@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30517.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{0225E9B7-ED8A-4BE0-BE0E-B47F5B434BED}"
+	ProjectSection(SolutionItems) = preProject
+		build\azure-pipelines-dev.yml = build\azure-pipelines-dev.yml
+		build\azure-pipelines.yml = build\azure-pipelines.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{F792D607-013B-404D-9E8B-A32680797096}"
+	ProjectSection(SolutionItems) = preProject
+		misc\changelog.txt = misc\changelog.txt
+		misc\todo.txt = misc\todo.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuget", "nuget", "{2739C0A0-E51F-4892-97C2-86F28FB11E02}"
+	ProjectSection(SolutionItems) = preProject
+		nuget\TauCode.Db.SqlClient.nuspec = nuget\TauCode.Db.SqlClient.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5EF1286D-3793-434F-A38B-185266099141}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{1666DA14-DF63-4001-A6C4-BFEA9F7A28D8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TauCode.Db.SqlClient", "src\TauCode.Db.SqlClient\TauCode.Db.SqlClient.csproj", "{893DBD41-D6CA-4111-9A82-7D42F37BE27D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TauCode.Db.SqlClient.Tests", "test\TauCode.Db.SqlClient.Tests\TauCode.Db.SqlClient.Tests.csproj", "{62C6528E-64FC-4964-81C5-EACB3F466F3E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{893DBD41-D6CA-4111-9A82-7D42F37BE27D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{893DBD41-D6CA-4111-9A82-7D42F37BE27D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{893DBD41-D6CA-4111-9A82-7D42F37BE27D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{893DBD41-D6CA-4111-9A82-7D42F37BE27D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62C6528E-64FC-4964-81C5-EACB3F466F3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62C6528E-64FC-4964-81C5-EACB3F466F3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62C6528E-64FC-4964-81C5-EACB3F466F3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62C6528E-64FC-4964-81C5-EACB3F466F3E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{893DBD41-D6CA-4111-9A82-7D42F37BE27D} = {5EF1286D-3793-434F-A38B-185266099141}
+		{62C6528E-64FC-4964-81C5-EACB3F466F3E} = {1666DA14-DF63-4001-A6C4-BFEA9F7A28D8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {617261AF-2FB7-42EB-B961-376E67D61544}
+	EndGlobalSection
+EndGlobal
