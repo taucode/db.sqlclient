@@ -70,9 +70,9 @@ namespace TauCode.Db.SqlClient
             }
         }
 
-        protected override IDbDataParameter CreateParameter(string tableName, ColumnMold column, string parameterName)
+        protected override IDbDataParameter CreateParameter(string tableName, ColumnMold column)
         {
-            SqlParameter parameter;
+            const string parameterName = "parameter_name_placeholder";
 
             switch (column.Type.Name)
             {
@@ -102,7 +102,7 @@ namespace TauCode.Db.SqlClient
 
                 case "decimal":
                 case "numeric":
-                    parameter = new SqlParameter(parameterName, SqlDbType.Decimal);
+                    var parameter = new SqlParameter(parameterName, SqlDbType.Decimal);
                     parameter.Scale = (byte)(column.Type.Scale ?? 0);
                     parameter.Precision = (byte)(column.Type.Precision ?? 0);
                     return parameter;
