@@ -20,7 +20,7 @@ namespace TauCode.Db.SqlClient.Tests
             // Arrange
 
             // Act
-            var ex = Assert.Throws<DbException>(() =>
+            var ex = Assert.Throws<TauDbException>(() =>
                 {
                     var tableInspector = this.DbInspector.Factory.CreateTableInspector(
                         this.Connection,
