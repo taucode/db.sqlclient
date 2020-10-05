@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
 using System.Data;
 
 namespace TauCode.Db.SqlClient
@@ -14,16 +14,15 @@ namespace TauCode.Db.SqlClient
         public IDbDialect GetDialect() => SqlDialect.Instance;
 
         public IDbScriptBuilder CreateScriptBuilder(string schema) => new SqlScriptBuilder(schema);
+        public IDbConnection CreateConnection() => new SqlConnection();
 
-        public IDbInspector CreateDbInspector(IDbConnection connection, string schema) => new SqlInspector(connection, schema);
+        public IDbInspector CreateInspector(IDbConnection connection, string schema) => new SqlInspector(connection, schema);
 
         public IDbTableInspector CreateTableInspector(IDbConnection connection, string schema, string tableName) =>
             new SqlTableInspector(connection, schema, tableName);
 
         public IDbCruder CreateCruder(IDbConnection connection, string schema) => new SqlCruder(connection, schema);
 
-        public IDbSerializer CreateDbSerializer(IDbConnection connection, string schema) => new SqlSerializer(connection, schema);
-
-        public IDbConverter CreateDbConverter() => throw new NotSupportedException();
+        public IDbSerializer CreateSerializer(IDbConnection connection, string schema) => new SqlSerializer(connection, schema);
     }
 }
