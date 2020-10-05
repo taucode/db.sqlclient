@@ -2,3 +2,11 @@
 ==========
 +   1. Correct NuSpec, it is missing refs.
 
+2020-09-29
+==========
+    1. Experiment: if open a db connection, and then try change its ConnectionString, what then?
+
+2020-10-05
+==========
+    1. Deal with schemas. It produces wrong results now.
+
