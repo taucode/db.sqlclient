@@ -49,7 +49,7 @@ namespace TauCode.Db.SqlClient.Tests
             };
 
             // Act
-            _cruder.InsertRow("language", language);
+            _cruder.InsertRow("language", language, s => true);
 
             // Assert
             using (var command = this.Connection.CreateCommand())
@@ -88,7 +88,7 @@ namespace TauCode.Db.SqlClient.Tests
                 "enum_string",
                 new EnumValueConverter<UserRole>(DbType.String));
 
-            _cruder.InsertRow("foo", foo);
+            _cruder.InsertRow("foo", foo, s => true);
 
             // Assert
             using (var command = this.Connection.CreateCommand())
@@ -118,7 +118,7 @@ namespace TauCode.Db.SqlClient.Tests
             };
 
             // Act
-            var ex = Assert.Throws<TauDbException>(() => _cruder.InsertRow("language", language));
+            var ex = Assert.Throws<TauDbException>(() => _cruder.InsertRow("language", language, s => true));
 
             // Assert
             Assert.That(ex.Message, Does.StartWith("Could not transform value"));
@@ -137,11 +137,14 @@ namespace TauCode.Db.SqlClient.Tests
                 name = "Italian",
             };
 
-            // Act
-            var ex = Assert.Throws<TauDbException>(() => _cruder.InsertRow("language", language));
 
-            // Assert
-            Assert.That(ex.Message, Is.EqualTo("Column not found: 'wrong_column_name'."));
+            throw new NotImplementedException();
+
+            //// Act
+            //var ex = Assert.Throws<TauDbException>(() => _cruder.InsertRow("language", language));
+
+            //// Assert
+            //Assert.That(ex.Message, Is.EqualTo("Column not found: 'wrong_column_name'."));
         }
 
         [Test]
@@ -157,7 +160,7 @@ namespace TauCode.Db.SqlClient.Tests
                 name = "Italian",
             };
 
-            _cruder.InsertRow("language", language);
+            _cruder.InsertRow("language", language, s => true);
 
             // Act
             var updated = _cruder.UpdateRow(
@@ -203,7 +206,7 @@ namespace TauCode.Db.SqlClient.Tests
                 name = "Italian",
             };
 
-            _cruder.InsertRow("language", language);
+            _cruder.InsertRow("language", language, s => true);
 
             // Act
             var ex = Assert.Throws<TauDbException>(() => _cruder.UpdateRow(
@@ -231,7 +234,7 @@ namespace TauCode.Db.SqlClient.Tests
                 name = "Italian",
             };
 
-            _cruder.InsertRow("language", language);
+            _cruder.InsertRow("language", language, s => true);
 
             // Act
             var ex = Assert.Throws<TauDbException>(() => _cruder.UpdateRow(
@@ -260,7 +263,7 @@ namespace TauCode.Db.SqlClient.Tests
                 name = "Italian",
             };
 
-            _cruder.InsertRow("language", language);
+            _cruder.InsertRow("language", language, s => true);
 
             // Act
             var ex = Assert.Throws<TauDbException>(() => _cruder.UpdateRow(
@@ -367,20 +370,23 @@ CREATE TABLE my_table(
 ");
 
             // Act
-            _cruder.InsertRow("my_table", new object(), new[] { "id, name, age, gender" });
-            var row = _cruder.GetAllRows("my_table").Single();
 
-            // Assert
-            Assert.That(row.Id, Is.TypeOf<int>());
-            Assert.That(row.Id, Is.EqualTo(1));
 
-            Assert.That(row.Name, Is.TypeOf<string>());
-            Assert.That(row.Name, Is.EqualTo("Manuela"));
+            throw new NotImplementedException();
+            //_cruder.InsertRow("my_table", new object(), new[] { "id, name, age, gender" });
+            //var row = _cruder.GetAllRows("my_table").Single();
 
-            Assert.That(row.Age, Is.TypeOf<long>());
-            Assert.That(row.Age, Is.EqualTo((21L)));
+            //// Assert
+            //Assert.That(row.Id, Is.TypeOf<int>());
+            //Assert.That(row.Id, Is.EqualTo(1));
 
-            Assert.That(row.Gender, Is.Null);
+            //Assert.That(row.Name, Is.TypeOf<string>());
+            //Assert.That(row.Name, Is.EqualTo("Manuela"));
+
+            //Assert.That(row.Age, Is.TypeOf<long>());
+            //Assert.That(row.Age, Is.EqualTo((21L)));
+
+            //Assert.That(row.Gender, Is.Null);
         }
 
         protected override void ExecuteDbCreationScript()

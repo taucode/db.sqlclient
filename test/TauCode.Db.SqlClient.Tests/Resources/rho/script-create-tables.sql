@@ -140,3 +140,4 @@ CREATE TABLE [foo](
     [enum_int32] int NULL,
     [enum_string] varchar(100) NULL
 )
+

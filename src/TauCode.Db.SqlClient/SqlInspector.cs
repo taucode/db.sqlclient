@@ -10,7 +10,21 @@ namespace TauCode.Db.SqlClient
 
         public const string DefaultSchema = "dbo";
 
-        private const string TableTypeForTable = "BASE TABLE"; // todo: don't need this, really
+        private static readonly HashSet<string> SystemSchemata = new HashSet<string>(new string[]
+        {
+            "guest",
+            "information_schema",
+            "sys",
+            "db_owner",
+            "db_accessadmin",
+            "db_securityadmin",
+            "db_ddladmin",
+            "db_backupoperator",
+            "db_datareader",
+            "db_datawriter",
+            "db_denydatareader",
+            "db_denydatawriter",
+        });
 
         #endregion
 
@@ -35,12 +49,11 @@ SELECT
 FROM
     information_schema.tables T
 WHERE
-    T.table_type = @p_tableType AND
+    T.table_type = 'BASE TABLE' AND
     T.table_schema = @p_schema
 ";
 
-            command.AddParameterWithValue("p_tableType", TableTypeForTable);
-            command.AddParameterWithValue("p_schema", this.Schema);
+            command.AddParameterWithValue("p_schema", this.SchemaName);
 
             command.CommandText = sql;
 
@@ -51,5 +64,7 @@ WHERE
 
             return tableNames;
         }
+
+        protected override HashSet<string> GetSystemSchemata() => SystemSchemata;
     }
 }

@@ -26,7 +26,7 @@ namespace TauCode.Db.SqlClient.Tests
             var sql = _scriptBuilder.BuildCreateTableScript(table, true);
 
             // Assert
-            var expectedSql = @"CREATE TABLE [fragment](
+            var expectedSql = @"CREATE TABLE [dbo].[fragment](
     [id] [uniqueidentifier] NOT NULL,
     [note_translation_id] [uniqueidentifier] NOT NULL,
     [sub_type_id] [uniqueidentifier] NOT NULL,

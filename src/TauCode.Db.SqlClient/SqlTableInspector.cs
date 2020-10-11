@@ -117,7 +117,7 @@ ORDER BY
 ";
 
             command.AddParameterWithValue("p_tableName", this.TableName);
-            command.AddParameterWithValue("p_schema", this.Schema);
+            command.AddParameterWithValue("p_schema", this.SchemaName);
 
             var columnInfos = DbTools
                 .GetCommandRows(command)
