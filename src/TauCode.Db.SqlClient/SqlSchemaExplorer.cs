@@ -124,7 +124,7 @@ WHERE
             }
         }
 
-        public override IReadOnlyList<string> GetSystemSchemata() => new[]
+        public override IReadOnlyList<string> GetSystemSchemaNames() => new[]
         {
             "guest",
             "INFORMATION_SCHEMA",
