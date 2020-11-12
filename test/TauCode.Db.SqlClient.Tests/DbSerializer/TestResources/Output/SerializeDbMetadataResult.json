@@ -1,0 +1,664 @@
+﻿{
+  "Tables": [
+    {
+      "Name": "Person",
+      "Columns": [
+        {
+          "Name": "Id",
+          "Type": {
+            "Name": "int",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "Tag",
+          "Type": {
+            "Name": "uniqueidentifier",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "IsChecked",
+          "Type": {
+            "Name": "bit",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "Birthday",
+          "Type": {
+            "Name": "smalldatetime",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "FirstName",
+          "Type": {
+            "Name": "nvarchar",
+            "Size": 100,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "LastName",
+          "Type": {
+            "Name": "nvarchar",
+            "Size": 100,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "Initials",
+          "Type": {
+            "Name": "nchar",
+            "Size": 2,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "Gender",
+          "Type": {
+            "Name": "tinyint",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        }
+      ],
+      "PrimaryKey": {
+        "Name": "PK_person",
+        "Columns": [
+          "Id"
+        ],
+        "Properties": {}
+      },
+      "ForeignKeys": [],
+      "Indexes": [
+        {
+          "Name": "PK_person",
+          "TableName": "Person",
+          "Columns": [
+            {
+              "Name": "Id",
+              "SortDirection": "Ascending",
+              "Properties": {}
+            }
+          ],
+          "IsUnique": true,
+          "Properties": {}
+        },
+        {
+          "Name": "UX_person_tag",
+          "TableName": "Person",
+          "Columns": [
+            {
+              "Name": "Tag",
+              "SortDirection": "Ascending",
+              "Properties": {}
+            }
+          ],
+          "IsUnique": true,
+          "Properties": {}
+        }
+      ],
+      "Properties": {}
+    },
+    {
+      "Name": "PersonData",
+      "Columns": [
+        {
+          "Name": "Id",
+          "Type": {
+            "Name": "smallint",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "PersonId",
+          "Type": {
+            "Name": "int",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "BestAge",
+          "Type": {
+            "Name": "tinyint",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "Hash",
+          "Type": {
+            "Name": "bigint",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "Height",
+          "Type": {
+            "Name": "decimal",
+            "Size": null,
+            "Precision": 10,
+            "Scale": 2,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "Weight",
+          "Type": {
+            "Name": "numeric",
+            "Size": null,
+            "Precision": 10,
+            "Scale": 2,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "UpdatedAt",
+          "Type": {
+            "Name": "datetime2",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "Signature",
+          "Type": {
+            "Name": "binary",
+            "Size": 4,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        }
+      ],
+      "PrimaryKey": {
+        "Name": "PK_personData",
+        "Columns": [
+          "Id"
+        ],
+        "Properties": {}
+      },
+      "ForeignKeys": [
+        {
+          "Name": "FK_personData_person",
+          "ColumnNames": [
+            "PersonId"
+          ],
+          "ReferencedTableName": "Person",
+          "ReferencedColumnNames": [
+            "Id"
+          ],
+          "Properties": {}
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "PK_personData",
+          "TableName": "PersonData",
+          "Columns": [
+            {
+              "Name": "Id",
+              "SortDirection": "Ascending",
+              "Properties": {}
+            }
+          ],
+          "IsUnique": true,
+          "Properties": {}
+        }
+      ],
+      "Properties": {}
+    },
+    {
+      "Name": "WorkInfo",
+      "Columns": [
+        {
+          "Name": "Id",
+          "Type": {
+            "Name": "int",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "PersonId",
+          "Type": {
+            "Name": "int",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "PositionCode",
+          "Type": {
+            "Name": "varchar",
+            "Size": 100,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "PositionDescription",
+          "Type": {
+            "Name": "nvarchar",
+            "Size": -1,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "PositionDescriptionEn",
+          "Type": {
+            "Name": "varchar",
+            "Size": -1,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "HiredOn",
+          "Type": {
+            "Name": "datetime",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "WorkStartDayTime",
+          "Type": {
+            "Name": "time",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "Salary",
+          "Type": {
+            "Name": "money",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "Bonus",
+          "Type": {
+            "Name": "smallmoney",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "OvertimeCoef",
+          "Type": {
+            "Name": "real",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "WeekendCoef",
+          "Type": {
+            "Name": "float",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "Url",
+          "Type": {
+            "Name": "varchar",
+            "Size": 200,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        }
+      ],
+      "PrimaryKey": {
+        "Name": "PK_workInfo",
+        "Columns": [
+          "Id"
+        ],
+        "Properties": {}
+      },
+      "ForeignKeys": [
+        {
+          "Name": "FK_workInfo_person",
+          "ColumnNames": [
+            "PersonId"
+          ],
+          "ReferencedTableName": "Person",
+          "ReferencedColumnNames": [
+            "Id"
+          ],
+          "Properties": {}
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "IX_workInfo_salary_bonus",
+          "TableName": "WorkInfo",
+          "Columns": [
+            {
+              "Name": "Salary",
+              "SortDirection": "Ascending",
+              "Properties": {}
+            },
+            {
+              "Name": "Bonus",
+              "SortDirection": "Descending",
+              "Properties": {}
+            }
+          ],
+          "IsUnique": false,
+          "Properties": {}
+        },
+        {
+          "Name": "PK_workInfo",
+          "TableName": "WorkInfo",
+          "Columns": [
+            {
+              "Name": "Id",
+              "SortDirection": "Ascending",
+              "Properties": {}
+            }
+          ],
+          "IsUnique": true,
+          "Properties": {}
+        }
+      ],
+      "Properties": {}
+    },
+    {
+      "Name": "Photo",
+      "Columns": [
+        {
+          "Name": "Id",
+          "Type": {
+            "Name": "char",
+            "Size": 4,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "PersonDataId",
+          "Type": {
+            "Name": "smallint",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "Content",
+          "Type": {
+            "Name": "varbinary",
+            "Size": -1,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "ContentThumbnail",
+          "Type": {
+            "Name": "varbinary",
+            "Size": 4000,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "TakenAt",
+          "Type": {
+            "Name": "datetimeoffset",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "ValidUntil",
+          "Type": {
+            "Name": "date",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        }
+      ],
+      "PrimaryKey": {
+        "Name": "PK_photo",
+        "Columns": [
+          "Id"
+        ],
+        "Properties": {}
+      },
+      "ForeignKeys": [
+        {
+          "Name": "FK_photo_personData",
+          "ColumnNames": [
+            "PersonDataId"
+          ],
+          "ReferencedTableName": "PersonData",
+          "ReferencedColumnNames": [
+            "Id"
+          ],
+          "Properties": {}
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "PK_photo",
+          "TableName": "Photo",
+          "Columns": [
+            {
+              "Name": "Id",
+              "SortDirection": "Ascending",
+              "Properties": {}
+            }
+          ],
+          "IsUnique": true,
+          "Properties": {}
+        }
+      ],
+      "Properties": {}
+    }
+  ],
+  "Properties": {}
+}

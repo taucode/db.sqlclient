@@ -1,4 +1,5 @@
-﻿using TauCode.Db.Model;
+﻿using System.Text;
+using TauCode.Db.Model;
 
 namespace TauCode.Db.SqlClient
 {
@@ -8,7 +9,7 @@ namespace TauCode.Db.SqlClient
         private const string MAX_SIZE = "max";
 
         public SqlScriptBuilder(string schema)
-            : base(schema)
+            : base(schema ?? SqlTools.DefaultSchemaName)
         {
 
         }
@@ -32,8 +33,12 @@ namespace TauCode.Db.SqlClient
                 table.Name,
                 this.CurrentOpeningIdentifierDelimiter);
 
-            var result = $"INSERT INTO {decoratedTableName} DEFAULT VALUES";
-            return result;
+            var sb = new StringBuilder();
+            sb.Append("INSERT INTO ");
+            this.WriteSchemaPrefixIfNeeded(sb);
+            sb.Append($"{decoratedTableName} DEFAULT VALUES");
+
+            return sb.ToString();
         }
     }
 }

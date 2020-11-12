@@ -1,11 +1,11 @@
-﻿using System.Data;
+﻿using Microsoft.Data.SqlClient;
 
 namespace TauCode.Db.SqlClient
 {
     public class SqlSerializer : DbSerializerBase
     {
-        public SqlSerializer(IDbConnection connection, string schema)
-            : base(connection, schema)
+        public SqlSerializer(SqlConnection connection, string schema)
+            : base(connection, schema ?? SqlTools.DefaultSchemaName)
 
         {
         }

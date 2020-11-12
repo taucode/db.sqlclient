@@ -1,6 +1,6 @@
-﻿using Microsoft.Data.SqlClient;
-using System;
+﻿using System;
 using System.Data;
+using Microsoft.Data.SqlClient;
 using TauCode.Db.DbValueConverters;
 using TauCode.Db.Model;
 
@@ -8,8 +8,12 @@ namespace TauCode.Db.SqlClient
 {
     public class SqlCruder : DbCruderBase
     {
-        public SqlCruder(IDbConnection connection, string schema)
-            : base(connection, schema)
+        private const int TimeTypeColumnSize = 4;
+        private const int DateTime2TypeColumnSize = 8;
+        private const int DateTimeOffsetTypeColumnSize = 10;
+
+        public SqlCruder(SqlConnection connection, string schemaName)
+            : base(connection, schemaName ?? SqlTools.DefaultSchemaName)
         {
         }
 
@@ -17,44 +21,13 @@ namespace TauCode.Db.SqlClient
 
         protected override IDbValueConverter CreateDbValueConverter(ColumnMold column)
         {
-            var typeName = column.Type.Name.ToLowerInvariant();
-            switch (typeName)
+            switch (column.Type.Name)
             {
                 case "uniqueidentifier":
                     return new GuidValueConverter();
 
-                case "char":
-                case "varchar":
-                case "nchar":
-                case "nvarchar":
-                    return new StringValueConverter();
-
-                case "int":
-                case "integer":
-                    return new Int32ValueConverter();
-
-                case "datetime":
-                case "datetime2":
-                case "date":
-                    return new DateTimeValueConverter();
-
                 case "bit":
                     return new BooleanValueConverter();
-
-                case "binary":
-                case "varbinary":
-                    return new ByteArrayValueConverter();
-
-                case "float":
-                    return new DoubleValueConverter();
-
-                case "real":
-                    return new SingleValueConverter();
-
-                case "money":
-                case "decimal":
-                case "numeric":
-                    return new DecimalValueConverter();
 
                 case "tinyint":
                     return new ByteValueConverter();
@@ -62,8 +35,46 @@ namespace TauCode.Db.SqlClient
                 case "smallint":
                     return new Int16ValueConverter();
 
+                case "int":
+                    return new Int32ValueConverter();
+
                 case "bigint":
                     return new Int64ValueConverter();
+
+                case "decimal":
+                case "numeric":
+
+                case "money":
+                case "smallmoney":
+                    return new DecimalValueConverter();
+
+                case "real":
+                    return new SingleValueConverter();
+
+                case "float":
+                    return new DoubleValueConverter();
+
+                case "date":
+                case "datetime":
+                case "datetime2":
+                case "smalldatetime":
+                    return new DateTimeValueConverter();
+
+                case "datetimeoffset":
+                    return new DateTimeOffsetValueConverter();
+
+                case "time":
+                    return new TimeSpanValueConverter();
+
+                case "char":
+                case "varchar":
+                case "nchar":
+                case "nvarchar":
+                    return new StringValueConverter();
+
+                case "binary":
+                case "varbinary":
+                    return new ByteArrayValueConverter();
 
                 default:
                     throw new NotImplementedException();
@@ -79,8 +90,8 @@ namespace TauCode.Db.SqlClient
                 case "uniqueidentifier":
                     return new SqlParameter(parameterName, SqlDbType.UniqueIdentifier);
 
-                case "int":
-                    return new SqlParameter(parameterName, SqlDbType.Int);
+                case "bit":
+                    return new SqlParameter(parameterName, SqlDbType.Bit);
 
                 case "tinyint":
                     return new SqlParameter(parameterName, SqlDbType.TinyInt);
@@ -88,17 +99,11 @@ namespace TauCode.Db.SqlClient
                 case "smallint":
                     return new SqlParameter(parameterName, SqlDbType.SmallInt);
 
+                case "int":
+                    return new SqlParameter(parameterName, SqlDbType.Int);
+
                 case "bigint":
                     return new SqlParameter(parameterName, SqlDbType.BigInt);
-
-                case "float":
-                    return new SqlParameter(parameterName, SqlDbType.Float);
-
-                case "real":
-                    return new SqlParameter(parameterName, SqlDbType.Real);
-
-                case "money":
-                    return new SqlParameter(parameterName, SqlDbType.Money);
 
                 case "decimal":
                 case "numeric":
@@ -107,26 +112,53 @@ namespace TauCode.Db.SqlClient
                     parameter.Precision = (byte)(column.Type.Precision ?? 0);
                     return parameter;
 
-                case "nchar":
-                    return new SqlParameter(parameterName, SqlDbType.NChar, column.Type.Size ?? 0);
+                case "smallmoney":
+                    return new SqlParameter(parameterName, SqlDbType.SmallMoney);
 
-                case "nvarchar":
-                    return new SqlParameter(parameterName, SqlDbType.NVarChar, column.Type.Size ?? 0);
+                case "money":
+                    return new SqlParameter(parameterName, SqlDbType.Money);
 
-                case "char":
-                    return new SqlParameter(parameterName, SqlDbType.Char, column.Type.Size ?? 0);
+                case "real":
+                    return new SqlParameter(parameterName, SqlDbType.Real);
 
-                case "varchar":
-                    return new SqlParameter(parameterName, SqlDbType.VarChar, column.Type.Size ?? 0);
+                case "float":
+                    return new SqlParameter(parameterName, SqlDbType.Float);
+
+                case "date":
+                    return new SqlParameter(parameterName, SqlDbType.Date);
 
                 case "datetime":
                     return new SqlParameter(parameterName, SqlDbType.DateTime);
 
-                case "bit":
-                    return new SqlParameter(parameterName, SqlDbType.Bit);
+                case "datetime2":
+                    return new SqlParameter(parameterName, SqlDbType.DateTime2, DateTime2TypeColumnSize);
+
+                case "datetimeoffset":
+                    return new SqlParameter(parameterName, SqlDbType.DateTimeOffset, DateTimeOffsetTypeColumnSize);
+
+                case "smalldatetime":
+                    return new SqlParameter(parameterName, SqlDbType.SmallDateTime);
+
+                case "time":
+                    return new SqlParameter(parameterName, SqlDbType.Time, TimeTypeColumnSize);
+
+                case "char":
+                    return new SqlParameter(parameterName, SqlDbType.Char, column.Type.Size ?? throw new NotImplementedException());
+
+                case "varchar":
+                    return new SqlParameter(parameterName, SqlDbType.VarChar, column.Type.Size ?? throw new NotImplementedException());
+
+                case "nchar":
+                    return new SqlParameter(parameterName, SqlDbType.NChar, column.Type.Size ?? throw new NotImplementedException());
+
+                case "nvarchar":
+                    return new SqlParameter(parameterName, SqlDbType.NVarChar, column.Type.Size ?? throw new NotImplementedException());
+
+                case "binary":
+                    return new SqlParameter(parameterName, SqlDbType.Binary, column.Type.Size ?? throw new NotImplementedException());
 
                 case "varbinary":
-                    return new SqlParameter(parameterName, SqlDbType.VarBinary, column.Type.Size ?? -1);
+                    return new SqlParameter(parameterName, SqlDbType.VarBinary, column.Type.Size ?? throw new NotImplementedException());
 
                 default:
                     throw new NotImplementedException();
