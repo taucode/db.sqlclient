@@ -1,0 +1,502 @@
+﻿{
+  "Tables": [
+    {
+      "Name": "currency",
+      "Columns": [
+        {
+          "Name": "id",
+          "Type": {
+            "Name": "bigint",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": {
+            "Seed": "1",
+            "Increment": "1",
+            "Properties": {}
+          },
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "code",
+          "Type": {
+            "Name": "varchar",
+            "Size": 3,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "name",
+          "Type": {
+            "Name": "nvarchar",
+            "Size": 50,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "is_available_to_watchers",
+          "Type": {
+            "Name": "bit",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        }
+      ],
+      "PrimaryKey": {
+        "Name": "PK_currency",
+        "Columns": [ "id" ],
+        "Properties": {}
+      },
+      "ForeignKeys": [],
+      "Indexes": [
+        {
+          "Name": "PK_currency",
+          "TableName": "currency",
+          "Columns": [
+            {
+              "Name": "id",
+              "SortDirection": 1,
+              "Properties": {}
+            }
+          ],
+          "IsUnique": true,
+          "Properties": {}
+        },
+        {
+          "Name": "UX_currency_code",
+          "TableName": "currency",
+          "Columns": [
+            {
+              "Name": "code",
+              "SortDirection": 1,
+              "Properties": {}
+            }
+          ],
+          "IsUnique": true,
+          "Properties": {}
+        }
+      ],
+      "Properties": {}
+    },
+    {
+      "Name": "watcher",
+      "Columns": [
+        {
+          "Name": "id",
+          "Type": {
+            "Name": "bigint",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": {
+            "Seed": "1",
+            "Increment": "1",
+            "Properties": {}
+          },
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "guid",
+          "Type": {
+            "Name": "uniqueidentifier",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        }
+      ],
+      "PrimaryKey": {
+        "Name": "PK_watcher",
+        "Columns": [ "id" ],
+        "Properties": {}
+      },
+      "ForeignKeys": [],
+      "Indexes": [
+        {
+          "Name": "PK_watcher",
+          "TableName": "watcher",
+          "Columns": [
+            {
+              "Name": "id",
+              "SortDirection": 1,
+              "Properties": {}
+            }
+          ],
+          "IsUnique": true,
+          "Properties": {}
+        },
+        {
+          "Name": "UX_watcher_guid",
+          "TableName": "watcher",
+          "Columns": [
+            {
+              "Name": "guid",
+              "SortDirection": 1,
+              "Properties": {}
+            }
+          ],
+          "IsUnique": true,
+          "Properties": {}
+        }
+      ],
+      "Properties": {}
+    },
+    {
+      "Name": "system_watcher",
+      "Columns": [
+        {
+          "Name": "watcher_id",
+          "Type": {
+            "Name": "bigint",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "code",
+          "Type": {
+            "Name": "varchar",
+            "Size": 50,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        }
+      ],
+      "PrimaryKey": {
+        "Name": "PK_systemWatcher",
+        "Columns": [ "watcher_id" ],
+        "Properties": {}
+      },
+      "ForeignKeys": [
+        {
+          "Name": "FK_systemWatcher_watcher",
+          "ColumnNames": [ "watcher_id" ],
+          "ReferencedTableName": "watcher",
+          "ReferencedColumnNames": [ "id" ],
+          "Properties": {}
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "PK_systemWatcher",
+          "TableName": "system_watcher",
+          "Columns": [
+            {
+              "Name": "watcher_id",
+              "SortDirection": 1,
+              "Properties": {}
+            }
+          ],
+          "IsUnique": true,
+          "Properties": {}
+        },
+        {
+          "Name": "UX_systemWatcher_Code",
+          "TableName": "system_watcher",
+          "Columns": [
+            {
+              "Name": "code",
+              "SortDirection": 1,
+              "Properties": {}
+            }
+          ],
+          "IsUnique": true,
+          "Properties": {}
+        }
+      ],
+      "Properties": {}
+    },
+    {
+      "Name": "quote",
+      "Columns": [
+        {
+          "Name": "id",
+          "Type": {
+            "Name": "bigint",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": {
+            "Seed": "1",
+            "Increment": "1",
+            "Properties": {}
+          },
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "watcher_id",
+          "Type": {
+            "Name": "bigint",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "currency_id",
+          "Type": {
+            "Name": "bigint",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "date",
+          "Type": {
+            "Name": "datetimeoffset",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "is_basic",
+          "Type": {
+            "Name": "bit",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": false,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "rate",
+          "Type": {
+            "Name": "decimal",
+            "Size": null,
+            "Precision": 20,
+            "Scale": 10,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        },
+        {
+          "Name": "system_watcher_id",
+          "Type": {
+            "Name": "bigint",
+            "Size": null,
+            "Precision": null,
+            "Scale": null,
+            "Properties": {}
+          },
+          "IsNullable": true,
+          "Identity": null,
+          "Default": null,
+          "Properties": {}
+        }
+      ],
+      "PrimaryKey": {
+        "Name": "PK_quote",
+        "Columns": [ "id" ],
+        "Properties": {}
+      },
+      "ForeignKeys": [
+        {
+          "Name": "FK_quote_currency",
+          "ColumnNames": [ "currency_id" ],
+          "ReferencedTableName": "currency",
+          "ReferencedColumnNames": [ "id" ],
+          "Properties": {}
+        },
+        {
+          "Name": "FK_quote_systemWatcher",
+          "ColumnNames": [ "system_watcher_id" ],
+          "ReferencedTableName": "system_watcher",
+          "ReferencedColumnNames": [ "watcher_id" ],
+          "Properties": {}
+        },
+        {
+          "Name": "FK_quote_watcher",
+          "ColumnNames": [ "watcher_id" ],
+          "ReferencedTableName": "watcher",
+          "ReferencedColumnNames": [ "id" ],
+          "Properties": {}
+        }
+      ],
+      "Indexes": [
+        {
+          "Name": "IX_quote_currencyId",
+          "TableName": "quote",
+          "Columns": [
+            {
+              "Name": "currency_id",
+              "SortDirection": 1,
+              "Properties": {}
+            }
+          ],
+          "IsUnique": false,
+          "Properties": {}
+        },
+        {
+          "Name": "IX_quote_systemWatcherId",
+          "TableName": "quote",
+          "Columns": [
+            {
+              "Name": "system_watcher_id",
+              "SortDirection": 1,
+              "Properties": {}
+            }
+          ],
+          "IsUnique": false,
+          "Properties": {}
+        },
+        {
+          "Name": "IX_quote_watcherId",
+          "TableName": "quote",
+          "Columns": [
+            {
+              "Name": "watcher_id",
+              "SortDirection": 1,
+              "Properties": {}
+            }
+          ],
+          "IsUnique": false,
+          "Properties": {}
+        },
+        {
+          "Name": "IX_quote_watcherId_currencyId",
+          "TableName": "quote",
+          "Columns": [
+            {
+              "Name": "watcher_id",
+              "SortDirection": 1,
+              "Properties": {}
+            },
+            {
+              "Name": "currency_id",
+              "SortDirection": 1,
+              "Properties": {}
+            }
+          ],
+          "IsUnique": false,
+          "Properties": {}
+        },
+        {
+          "Name": "IX_quote_watcherId_date",
+          "TableName": "quote",
+          "Columns": [
+            {
+              "Name": "watcher_id",
+              "SortDirection": 1,
+              "Properties": {}
+            },
+            {
+              "Name": "date",
+              "SortDirection": 2,
+              "Properties": {}
+            }
+          ],
+          "IsUnique": false,
+          "Properties": {}
+        },
+        {
+          "Name": "PK_quote",
+          "TableName": "quote",
+          "Columns": [
+            {
+              "Name": "id",
+              "SortDirection": 1,
+              "Properties": {}
+            }
+          ],
+          "IsUnique": true,
+          "Properties": {}
+        },
+        {
+          "Name": "UX_quote_watcherId_currencyId_date",
+          "TableName": "quote",
+          "Columns": [
+            {
+              "Name": "watcher_id",
+              "SortDirection": 1,
+              "Properties": {}
+            },
+            {
+              "Name": "currency_id",
+              "SortDirection": 1,
+              "Properties": {}
+            },
+            {
+              "Name": "date",
+              "SortDirection": 1,
+              "Properties": {}
+            }
+          ],
+          "IsUnique": true,
+          "Properties": {}
+        }
+      ],
+      "Properties": {}
+    }
+  ],
+  "Properties": {}
+}

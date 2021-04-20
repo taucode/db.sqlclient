@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Microsoft.Data.SqlClient;
 using TauCode.Db.Extensions;
 
 namespace TauCode.Db.SqlClient.Tests
@@ -11,6 +11,8 @@ namespace TauCode.Db.SqlClient.Tests
     {
         internal const string ConnectionString = @"Server=.\mssqltest;Database=rho.test;Trusted_Connection=True;";
 
+        internal const string SchemaName = "zeta";
+
         internal static SqlConnection CreateConnection()
         {
             var connection = new SqlConnection(ConnectionString);
@@ -18,9 +20,9 @@ namespace TauCode.Db.SqlClient.Tests
             return connection;
         }
 
-        internal static void PurgeDatabase(this SqlConnection connection)
+        internal static void DropAllSchemas(this SqlConnection connection)
         {
-            new SqlSchemaExplorer(connection).PurgeDatabase();
+            new SqlSchemaExplorer(connection).DropAllSchemas();
         }
 
         internal static void WriteDiff(string actual, string expected, string directory, string fileExtension, string reminder)

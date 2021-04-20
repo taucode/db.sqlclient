@@ -77,7 +77,7 @@ namespace TauCode.Db.SqlClient.Tests.DbInspector
         public void GetSchemaNames_NoArguments_ReturnsSchemaNames()
         {
             // Arrange
-            this.Connection.CreateSchema("zeta");
+            this.Connection.CreateSchema(TestHelper.SchemaName);
             this.Connection.CreateSchema("hello");
             this.Connection.CreateSchema("HangFire");
 
@@ -94,7 +94,7 @@ namespace TauCode.Db.SqlClient.Tests.DbInspector
                     "dbo",
                     "HangFire",
                     "hello",
-                    "zeta",
+                    TestHelper.SchemaName,
                 }));
         }
 
@@ -106,7 +106,7 @@ namespace TauCode.Db.SqlClient.Tests.DbInspector
         public void GetTableNames_ExistingSchema_ReturnsTableNames()
         {
             // Arrange
-            this.Connection.CreateSchema("zeta");
+            this.Connection.CreateSchema(TestHelper.SchemaName);
 
             this.Connection.ExecuteSingleSql(@"
 CREATE TABLE [zeta].[tab2]([id] int PRIMARY KEY)
@@ -121,7 +121,7 @@ CREATE TABLE [dbo].[tab3]([id] int PRIMARY KEY)
 ");
 
 
-            IDbInspector inspector = new SqlInspector(this.Connection, "zeta");
+            IDbInspector inspector = new SqlInspector(this.Connection, TestHelper.SchemaName);
 
             // Act
             var tableNames = inspector.GetTableNames();
@@ -140,7 +140,7 @@ CREATE TABLE [dbo].[tab3]([id] int PRIMARY KEY)
         public void GetTableNames_NonExistingSchema_ReturnsEmptyList()
         {
             // Arrange
-            this.Connection.CreateSchema("zeta");
+            this.Connection.CreateSchema(TestHelper.SchemaName);
 
             this.Connection.ExecuteSingleSql(@"
 CREATE TABLE [zeta].[tab2]([id] int PRIMARY KEY)

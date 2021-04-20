@@ -24,7 +24,7 @@ namespace TauCode.Db.SqlClient.Tests
         [SetUp]
         public void SetUpBase()
         {
-            this.Connection.PurgeDatabase();
+            this.Connection.DropAllSchemas();
         }
     }
 }

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
 using System.Data;
-using Microsoft.Data.SqlClient;
 using TauCode.Db.DbValueConverters;
+using TauCode.Db.Exceptions;
 using TauCode.Db.Model;
 
 namespace TauCode.Db.SqlClient
@@ -19,7 +19,7 @@ namespace TauCode.Db.SqlClient
 
         public override IDbUtilityFactory Factory => SqlUtilityFactory.Instance;
 
-        protected override IDbValueConverter CreateDbValueConverter(ColumnMold column)
+        protected override IDbValueConverter CreateDbValueConverter(string tableName, ColumnMold column)
         {
             switch (column.Type.Name)
             {
@@ -77,7 +77,7 @@ namespace TauCode.Db.SqlClient
                     return new ByteArrayValueConverter();
 
                 default:
-                    throw new NotImplementedException();
+                    throw this.CreateColumnTypeNotSupportedException(tableName, column.Name, column.Type.Name);
             }
         }
 
@@ -143,25 +143,52 @@ namespace TauCode.Db.SqlClient
                     return new SqlParameter(parameterName, SqlDbType.Time, TimeTypeColumnSize);
 
                 case "char":
-                    return new SqlParameter(parameterName, SqlDbType.Char, column.Type.Size ?? throw new NotImplementedException());
+                    return new SqlParameter(parameterName, SqlDbType.Char, column.Type.Size ?? throw this.CreateColumnSizeMustBeProvidedException(tableName, column));
 
                 case "varchar":
-                    return new SqlParameter(parameterName, SqlDbType.VarChar, column.Type.Size ?? throw new NotImplementedException());
+                    return new SqlParameter(parameterName, SqlDbType.VarChar, column.Type.Size ?? throw this.CreateColumnSizeMustBeProvidedException(tableName, column));
 
                 case "nchar":
-                    return new SqlParameter(parameterName, SqlDbType.NChar, column.Type.Size ?? throw new NotImplementedException());
+                    return new SqlParameter(parameterName, SqlDbType.NChar, column.Type.Size ?? throw this.CreateColumnSizeMustBeProvidedException(tableName, column));
 
                 case "nvarchar":
-                    return new SqlParameter(parameterName, SqlDbType.NVarChar, column.Type.Size ?? throw new NotImplementedException());
+                    return new SqlParameter(parameterName, SqlDbType.NVarChar, column.Type.Size ?? throw this.CreateColumnSizeMustBeProvidedException(tableName, column));
 
                 case "binary":
-                    return new SqlParameter(parameterName, SqlDbType.Binary, column.Type.Size ?? throw new NotImplementedException());
+                    return new SqlParameter(parameterName, SqlDbType.Binary, column.Type.Size ?? throw this.CreateColumnSizeMustBeProvidedException(tableName, column));
 
                 case "varbinary":
-                    return new SqlParameter(parameterName, SqlDbType.VarBinary, column.Type.Size ?? throw new NotImplementedException());
+                    return new SqlParameter(parameterName, SqlDbType.VarBinary, column.Type.Size ?? throw this.CreateColumnSizeMustBeProvidedException(tableName, column));
 
                 default:
-                    throw new NotImplementedException();
+                    throw new TauDbException($"Type '{column.Type.Name}' not supported. Table: '{tableName}', column: '{column.Name}'.");
+            }
+        }
+
+        private TauDbException CreateColumnSizeMustBeProvidedException(string tableName, ColumnMold columnMold)
+        {
+            var msg = $"Column '{columnMold.Name}' (type '{columnMold.Type.Name}') of table '{tableName}' must have size.";
+            return new TauDbException(msg);
+        }
+
+        protected override void FitParameterValue(IDbDataParameter parameter)
+        {
+            var value = parameter.Value;
+
+            int? length = null;
+
+            if (value is string s)
+            {
+                length = s.Length;
+            }
+            else if (value is byte[] arr)
+            {
+                length = arr.Length;
+            }
+
+            if (length.HasValue)
+            {
+                parameter.Size = length.Value;
             }
         }
     }

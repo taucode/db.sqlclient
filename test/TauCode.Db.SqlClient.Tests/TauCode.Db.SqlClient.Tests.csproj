@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -65,6 +64,11 @@
     <None Remove="DbSerializer\TestResources\Output\SerializeTableMetadataResult.json" />
     <None Remove="DbSerializer\TestResources\Output\SerializeTableResult.json" />
     <None Remove="DbSerializer\TestResources\SeedPersonDb.sql" />
+    <None Remove="EconeraTesting\Resources\new-system-watcher.json" />
+    <None Remove="EconeraTesting\Resources\no_pk_table.json" />
+    <None Remove="EconeraTesting\Resources\quick-and-dirty-data.json" />
+    <None Remove="EconeraTesting\Resources\quick-and-dirty-metadata.json" />
+    <None Remove="EconeraTesting\Resources\testdb.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -126,10 +130,16 @@
     <EmbeddedResource Include="DbSerializer\TestResources\Output\SerializeTableMetadataResult.json" />
     <EmbeddedResource Include="DbSerializer\TestResources\Output\SerializeTableResult.json" />
     <EmbeddedResource Include="DbSerializer\TestResources\SeedPersonDb.sql" />
+    <EmbeddedResource Include="EconeraTesting\Resources\new-system-watcher.json" />
+    <EmbeddedResource Include="EconeraTesting\Resources\no_pk_table.json" />
+    <EmbeddedResource Include="EconeraTesting\Resources\quick-and-dirty-data.json" />
+    <EmbeddedResource Include="EconeraTesting\Resources\quick-and-dirty-metadata.json" />
+    <EmbeddedResource Include="EconeraTesting\Resources\testdb.json" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="nunit" Version="3.13.1" />
+    <PackageReference Include="Moq" Version="4.16.1" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
   </ItemGroup>

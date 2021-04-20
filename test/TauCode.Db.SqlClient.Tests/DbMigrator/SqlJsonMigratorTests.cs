@@ -1,7 +1,9 @@
-﻿using System;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using NUnit.Framework;
+using System;
+using TauCode.Db.Data;
 using TauCode.Db.Exceptions;
+using TauCode.Db.Extensions;
 using TauCode.Extensions;
 
 namespace TauCode.Db.SqlClient.Tests.DbMigrator
@@ -105,28 +107,31 @@ namespace TauCode.Db.SqlClient.Tests.DbMigrator
         public void Migrate_ValidInput_RunsOk()
         {
             // Arrange
-            this.Connection.CreateSchema("zeta");
+            this.Connection.CreateSchema(TestHelper.SchemaName);
 
             var migrator = new SqlJsonMigrator(
                 this.Connection,
-                "zeta",
+                TestHelper.SchemaName,
                 () => this.GetType().Assembly.GetResourceText("MigrateMetadataInput.json", true),
                 () => this.GetType().Assembly.GetResourceText("MigrateDataCustomInput.json", true),
-                x => x != "WorkInfo",
-                (tableMold, row) =>
+                x => x != "WorkInfo");
+
+            migrator.Serializer.Cruder.BeforeInsertRow = (table, row, index) =>
+            {
+                var dynamicRow = (DynamicRow)row;
+
+                if (table.Name == "Person")
                 {
-                    if (tableMold.Name == "Person")
-                    {
-                        var birthday = (string)row.GetValue("Birthday");
-                        var birthdayDateTime = DateTime.Parse(birthday.Substring("Month_".Length));
-                        row.SetValue("Birthday", birthdayDateTime);
+                    var birthday = (string)dynamicRow.GetProperty("Birthday");
+                    var birthdayDateTime = DateTime.Parse(birthday.Substring("Month_".Length));
+                    dynamicRow.SetProperty("Birthday", birthdayDateTime);
 
-                        var genderString = (string)row.GetValue("Gender");
-                        row.SetValue("Gender", (byte)genderString.ToEnum<Gender>());
-                    }
+                    var genderString = (string)dynamicRow.GetProperty("Gender");
+                    dynamicRow.SetProperty("Gender", (byte)genderString.ToEnum<Gender>());
+                }
 
-                    return row;
-                });
+                return dynamicRow;
+            };
 
             // Act
             migrator.Migrate();
@@ -136,24 +141,24 @@ namespace TauCode.Db.SqlClient.Tests.DbMigrator
 
             #region metadata
 
-            var scriptBuilder = new SqlScriptBuilder("zeta");
+            var scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
-            var tableMolds = schemaExplorer.GetTables("zeta", true, true, true, true, true);
+            var tableMolds = schemaExplorer.GetTables(TestHelper.SchemaName, true, true, true, true, true);
 
             var script = scriptBuilder.BuildCreateAllTablesScript(tableMolds);
             var expectedScript = this.GetType().Assembly.GetResourceText("MigratedDbCustomOutput.sql", true);
 
             Assert.That(script, Is.EqualTo(expectedScript));
-            
+
             #endregion
 
             #region data
 
             #region Person
 
-            Assert.That(TestHelper.GetTableRowCount(this.Connection, "zeta", "Person"), Is.EqualTo(2));
+            Assert.That(TestHelper.GetTableRowCount(this.Connection, TestHelper.SchemaName, "Person"), Is.EqualTo(2));
 
-            var harvey = TestHelper.LoadRow(this.Connection, "zeta", "Person", 1);
+            var harvey = TestHelper.LoadRow(this.Connection, TestHelper.SchemaName, "Person", 1);
             Assert.That(harvey["Id"], Is.EqualTo(1));
             Assert.That(harvey["Tag"], Is.EqualTo(new Guid("df601c43-fb4c-4a4d-ab05-e6bf5cfa68d1")));
             Assert.That(harvey["IsChecked"], Is.EqualTo(true));
@@ -163,7 +168,7 @@ namespace TauCode.Db.SqlClient.Tests.DbMigrator
             Assert.That(harvey["Initials"], Is.EqualTo("HK"));
             Assert.That(harvey["Gender"], Is.EqualTo(100));
 
-            var maria = TestHelper.LoadRow(this.Connection, "zeta", "Person", 2);
+            var maria = TestHelper.LoadRow(this.Connection, TestHelper.SchemaName, "Person", 2);
             Assert.That(maria["Id"], Is.EqualTo(2));
             Assert.That(maria["Tag"], Is.EqualTo(new Guid("374d413a-6287-448d-a4c1-918067c2312c")));
             Assert.That(maria["IsChecked"], Is.EqualTo(null));
@@ -177,9 +182,9 @@ namespace TauCode.Db.SqlClient.Tests.DbMigrator
 
             #region PersonData
 
-            Assert.That(TestHelper.GetTableRowCount(this.Connection, "zeta", "PersonData"), Is.EqualTo(2));
+            Assert.That(TestHelper.GetTableRowCount(this.Connection, TestHelper.SchemaName, "PersonData"), Is.EqualTo(2));
 
-            var harveyData = TestHelper.LoadRow(this.Connection, "zeta", "PersonData", 101);
+            var harveyData = TestHelper.LoadRow(this.Connection, TestHelper.SchemaName, "PersonData", 101);
             Assert.That(harveyData["Id"], Is.EqualTo(101));
             Assert.That(harveyData["PersonId"], Is.EqualTo(1));
             Assert.That(harveyData["BestAge"], Is.EqualTo(42));
@@ -189,7 +194,7 @@ namespace TauCode.Db.SqlClient.Tests.DbMigrator
             Assert.That(harveyData["UpdatedAt"], Is.EqualTo(DateTime.Parse("1996-11-02T11:12:13")));
             Assert.That(harveyData["Signature"], Is.EqualTo(new byte[] { 0xde, 0xfe, 0xca, 0x77 }));
 
-            var mariaData = TestHelper.LoadRow(this.Connection, "zeta", "PersonData", 201);
+            var mariaData = TestHelper.LoadRow(this.Connection, TestHelper.SchemaName, "PersonData", 201);
             Assert.That(mariaData["Id"], Is.EqualTo(201));
             Assert.That(mariaData["PersonId"], Is.EqualTo(2));
             Assert.That(mariaData["BestAge"], Is.EqualTo(26));
@@ -203,19 +208,21 @@ namespace TauCode.Db.SqlClient.Tests.DbMigrator
 
             #region Photo
 
-            Assert.That(TestHelper.GetTableRowCount(this.Connection, "zeta", "Photo"), Is.EqualTo(4));
+            Assert.That(TestHelper.GetTableRowCount(this.Connection, TestHelper.SchemaName, "Photo"), Is.EqualTo(4));
 
-            var harveyPhoto1 = TestHelper.LoadRow(this.Connection, "zeta", "Photo", "PH-1");
+            var harveyPhoto1 = TestHelper.LoadRow(this.Connection, TestHelper.SchemaName, "Photo", "PH-1");
             Assert.That(harveyPhoto1["Id"], Is.EqualTo("PH-1"));
             Assert.That(harveyPhoto1["PersonDataId"], Is.EqualTo(101));
-            Assert.That(harveyPhoto1["Content"],
+            Assert.That(
+                harveyPhoto1["Content"],
                 Is.EqualTo(this.GetType().Assembly.GetResourceBytes("PicHarvey1.png", true)));
-            Assert.That(harveyPhoto1["ContentThumbnail"],
+            Assert.That(
+                harveyPhoto1["ContentThumbnail"],
                 Is.EqualTo(this.GetType().Assembly.GetResourceBytes("PicHarvey1Thumb.png", true)));
             Assert.That(harveyPhoto1["TakenAt"], Is.EqualTo(DateTimeOffset.Parse("1997-12-12T11:12:13+00:00")));
             Assert.That(harveyPhoto1["ValidUntil"], Is.EqualTo(DateTime.Parse("1998-12-12")));
 
-            var harveyPhoto2 = TestHelper.LoadRow(this.Connection, "zeta", "Photo", "PH-2");
+            var harveyPhoto2 = TestHelper.LoadRow(this.Connection, TestHelper.SchemaName, "Photo", "PH-2");
             Assert.That(harveyPhoto2["Id"], Is.EqualTo("PH-2"));
             Assert.That(harveyPhoto2["PersonDataId"], Is.EqualTo(101));
             Assert.That(harveyPhoto2["Content"],
@@ -225,22 +232,26 @@ namespace TauCode.Db.SqlClient.Tests.DbMigrator
             Assert.That(harveyPhoto2["TakenAt"], Is.EqualTo(DateTimeOffset.Parse("1991-01-01T02:16:17+00:00")));
             Assert.That(harveyPhoto2["ValidUntil"], Is.EqualTo(DateTime.Parse("1993-09-09")));
 
-            var mariaPhoto1 = TestHelper.LoadRow(this.Connection, "zeta", "Photo", "PM-1");
+            var mariaPhoto1 = TestHelper.LoadRow(this.Connection, TestHelper.SchemaName, "Photo", "PM-1");
             Assert.That(mariaPhoto1["Id"], Is.EqualTo("PM-1"));
             Assert.That(mariaPhoto1["PersonDataId"], Is.EqualTo(201));
-            Assert.That(mariaPhoto1["Content"],
+            Assert.That(
+                mariaPhoto1["Content"],
                 Is.EqualTo(this.GetType().Assembly.GetResourceBytes("PicMaria1.png", true)));
-            Assert.That(mariaPhoto1["ContentThumbnail"],
+            Assert.That(
+                mariaPhoto1["ContentThumbnail"],
                 Is.EqualTo(this.GetType().Assembly.GetResourceBytes("PicMaria1Thumb.png", true)));
             Assert.That(mariaPhoto1["TakenAt"], Is.EqualTo(DateTimeOffset.Parse("1998-04-05T08:09:22+00:00")));
             Assert.That(mariaPhoto1["ValidUntil"], Is.EqualTo(DateTime.Parse("1999-04-05")));
 
-            var mariaPhoto2 = TestHelper.LoadRow(this.Connection, "zeta", "Photo", "PM-2");
+            var mariaPhoto2 = TestHelper.LoadRow(this.Connection, TestHelper.SchemaName, "Photo", "PM-2");
             Assert.That(mariaPhoto2["Id"], Is.EqualTo("PM-2"));
             Assert.That(mariaPhoto2["PersonDataId"], Is.EqualTo(201));
-            Assert.That(mariaPhoto2["Content"],
+            Assert.That(
+                mariaPhoto2["Content"],
                 Is.EqualTo(this.GetType().Assembly.GetResourceBytes("PicMaria2.png", true)));
-            Assert.That(mariaPhoto2["ContentThumbnail"],
+            Assert.That(
+                mariaPhoto2["ContentThumbnail"],
                 Is.EqualTo(this.GetType().Assembly.GetResourceBytes("PicMaria2Thumb.png", true)));
             Assert.That(mariaPhoto2["TakenAt"], Is.EqualTo(DateTimeOffset.Parse("2001-06-01T11:12:19+00:00")));
             Assert.That(mariaPhoto2["ValidUntil"], Is.EqualTo(DateTime.Parse("2002-07-07")));
@@ -260,11 +271,11 @@ namespace TauCode.Db.SqlClient.Tests.DbMigrator
         public void Migrate_TablePredicateIsNull_MigratesAll()
         {
             // Arrange
-            this.Connection.CreateSchema("zeta");
+            this.Connection.CreateSchema(TestHelper.SchemaName);
 
             var migrator = new SqlJsonMigrator(
                 this.Connection,
-                "zeta",
+                TestHelper.SchemaName,
                 () => this.GetType().Assembly.GetResourceText("MigrateMetadataInput.json", true),
                 () => this.GetType().Assembly.GetResourceText("MigrateDataInput.json", true));
 
@@ -276,9 +287,9 @@ namespace TauCode.Db.SqlClient.Tests.DbMigrator
 
             #region metadata
 
-            var scriptBuilder = new SqlScriptBuilder("zeta");
+            var scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
-            var tableMolds = schemaExplorer.GetTables("zeta", true, true, true, true, true);
+            var tableMolds = schemaExplorer.GetTables(TestHelper.SchemaName, true, true, true, true, true);
 
             var script = scriptBuilder.BuildCreateAllTablesScript(tableMolds);
             var expectedScript = this.GetType().Assembly.GetResourceText("MigratedDbOutput.sql", true);
@@ -291,9 +302,9 @@ namespace TauCode.Db.SqlClient.Tests.DbMigrator
 
             #region Person
 
-            Assert.That(TestHelper.GetTableRowCount(this.Connection, "zeta", "Person"), Is.EqualTo(2));
+            Assert.That(TestHelper.GetTableRowCount(this.Connection, TestHelper.SchemaName, "Person"), Is.EqualTo(2));
 
-            var harvey = TestHelper.LoadRow(this.Connection, "zeta", "Person", 1);
+            var harvey = TestHelper.LoadRow(this.Connection, TestHelper.SchemaName, "Person", 1);
             Assert.That(harvey["Id"], Is.EqualTo(1));
             Assert.That(harvey["Tag"], Is.EqualTo(new Guid("df601c43-fb4c-4a4d-ab05-e6bf5cfa68d1")));
             Assert.That(harvey["IsChecked"], Is.EqualTo(true));
@@ -303,7 +314,7 @@ namespace TauCode.Db.SqlClient.Tests.DbMigrator
             Assert.That(harvey["Initials"], Is.EqualTo("HK"));
             Assert.That(harvey["Gender"], Is.EqualTo(100));
 
-            var maria = TestHelper.LoadRow(this.Connection, "zeta", "Person", 2);
+            var maria = TestHelper.LoadRow(this.Connection, TestHelper.SchemaName, "Person", 2);
             Assert.That(maria["Id"], Is.EqualTo(2));
             Assert.That(maria["Tag"], Is.EqualTo(new Guid("374d413a-6287-448d-a4c1-918067c2312c")));
             Assert.That(maria["IsChecked"], Is.EqualTo(null));
@@ -317,9 +328,9 @@ namespace TauCode.Db.SqlClient.Tests.DbMigrator
 
             #region PersonData
 
-            Assert.That(TestHelper.GetTableRowCount(this.Connection, "zeta", "PersonData"), Is.EqualTo(2));
+            Assert.That(TestHelper.GetTableRowCount(this.Connection, TestHelper.SchemaName, "PersonData"), Is.EqualTo(2));
 
-            var harveyData = TestHelper.LoadRow(this.Connection, "zeta", "PersonData", 101);
+            var harveyData = TestHelper.LoadRow(this.Connection, TestHelper.SchemaName, "PersonData", 101);
             Assert.That(harveyData["Id"], Is.EqualTo(101));
             Assert.That(harveyData["PersonId"], Is.EqualTo(1));
             Assert.That(harveyData["BestAge"], Is.EqualTo(42));
@@ -329,7 +340,7 @@ namespace TauCode.Db.SqlClient.Tests.DbMigrator
             Assert.That(harveyData["UpdatedAt"], Is.EqualTo(DateTime.Parse("1996-11-02T11:12:13")));
             Assert.That(harveyData["Signature"], Is.EqualTo(new byte[] { 0xde, 0xfe, 0xca, 0x77 }));
 
-            var mariaData = TestHelper.LoadRow(this.Connection, "zeta", "PersonData", 201);
+            var mariaData = TestHelper.LoadRow(this.Connection, TestHelper.SchemaName, "PersonData", 201);
             Assert.That(mariaData["Id"], Is.EqualTo(201));
             Assert.That(mariaData["PersonId"], Is.EqualTo(2));
             Assert.That(mariaData["BestAge"], Is.EqualTo(26));
@@ -343,9 +354,9 @@ namespace TauCode.Db.SqlClient.Tests.DbMigrator
 
             #region Photo
 
-            Assert.That(TestHelper.GetTableRowCount(this.Connection, "zeta", "Photo"), Is.EqualTo(4));
+            Assert.That(TestHelper.GetTableRowCount(this.Connection, TestHelper.SchemaName, "Photo"), Is.EqualTo(4));
 
-            var harveyPhoto1 = TestHelper.LoadRow(this.Connection, "zeta", "Photo", "PH-1");
+            var harveyPhoto1 = TestHelper.LoadRow(this.Connection, TestHelper.SchemaName, "Photo", "PH-1");
             Assert.That(harveyPhoto1["Id"], Is.EqualTo("PH-1"));
             Assert.That(harveyPhoto1["PersonDataId"], Is.EqualTo(101));
             Assert.That(harveyPhoto1["Content"],
@@ -355,7 +366,7 @@ namespace TauCode.Db.SqlClient.Tests.DbMigrator
             Assert.That(harveyPhoto1["TakenAt"], Is.EqualTo(DateTimeOffset.Parse("1997-12-12T11:12:13+00:00")));
             Assert.That(harveyPhoto1["ValidUntil"], Is.EqualTo(DateTime.Parse("1998-12-12")));
 
-            var harveyPhoto2 = TestHelper.LoadRow(this.Connection, "zeta", "Photo", "PH-2");
+            var harveyPhoto2 = TestHelper.LoadRow(this.Connection, TestHelper.SchemaName, "Photo", "PH-2");
             Assert.That(harveyPhoto2["Id"], Is.EqualTo("PH-2"));
             Assert.That(harveyPhoto2["PersonDataId"], Is.EqualTo(101));
             Assert.That(harveyPhoto2["Content"],
@@ -365,7 +376,7 @@ namespace TauCode.Db.SqlClient.Tests.DbMigrator
             Assert.That(harveyPhoto2["TakenAt"], Is.EqualTo(DateTimeOffset.Parse("1991-01-01T02:16:17+00:00")));
             Assert.That(harveyPhoto2["ValidUntil"], Is.EqualTo(DateTime.Parse("1993-09-09")));
 
-            var mariaPhoto1 = TestHelper.LoadRow(this.Connection, "zeta", "Photo", "PM-1");
+            var mariaPhoto1 = TestHelper.LoadRow(this.Connection, TestHelper.SchemaName, "Photo", "PM-1");
             Assert.That(mariaPhoto1["Id"], Is.EqualTo("PM-1"));
             Assert.That(mariaPhoto1["PersonDataId"], Is.EqualTo(201));
             Assert.That(mariaPhoto1["Content"],
@@ -375,7 +386,7 @@ namespace TauCode.Db.SqlClient.Tests.DbMigrator
             Assert.That(mariaPhoto1["TakenAt"], Is.EqualTo(DateTimeOffset.Parse("1998-04-05T08:09:22+00:00")));
             Assert.That(mariaPhoto1["ValidUntil"], Is.EqualTo(DateTime.Parse("1999-04-05")));
 
-            var mariaPhoto2 = TestHelper.LoadRow(this.Connection, "zeta", "Photo", "PM-2");
+            var mariaPhoto2 = TestHelper.LoadRow(this.Connection, TestHelper.SchemaName, "Photo", "PM-2");
             Assert.That(mariaPhoto2["Id"], Is.EqualTo("PM-2"));
             Assert.That(mariaPhoto2["PersonDataId"], Is.EqualTo(201));
             Assert.That(mariaPhoto2["Content"],
@@ -389,9 +400,9 @@ namespace TauCode.Db.SqlClient.Tests.DbMigrator
 
             #region WorkInfo
 
-            Assert.That(TestHelper.GetTableRowCount(this.Connection, "zeta", "WorkInfo"), Is.EqualTo(2));
+            Assert.That(TestHelper.GetTableRowCount(this.Connection, TestHelper.SchemaName, "WorkInfo"), Is.EqualTo(2));
 
-            var harveyWorkInfo = TestHelper.LoadRow(this.Connection, "zeta", "WorkInfo", 1001);
+            var harveyWorkInfo = TestHelper.LoadRow(this.Connection, TestHelper.SchemaName, "WorkInfo", 1001);
             Assert.That(harveyWorkInfo["Id"], Is.EqualTo(1001));
             Assert.That(harveyWorkInfo["PersonId"], Is.EqualTo(1));
             Assert.That(harveyWorkInfo["PositionCode"], Is.EqualTo("Fixer"));
@@ -405,7 +416,7 @@ namespace TauCode.Db.SqlClient.Tests.DbMigrator
             Assert.That(harveyWorkInfo["WeekendCoef"], Is.EqualTo(3.7));
             Assert.That(harveyWorkInfo["Url"], Is.EqualTo("https://example.com/wolf"));
 
-            var mariaWorkInfo = TestHelper.LoadRow(this.Connection, "zeta", "WorkInfo", 2001);
+            var mariaWorkInfo = TestHelper.LoadRow(this.Connection, TestHelper.SchemaName, "WorkInfo", 2001);
             Assert.That(mariaWorkInfo["Id"], Is.EqualTo(2001));
             Assert.That(mariaWorkInfo["PersonId"], Is.EqualTo(2));
             Assert.That(mariaWorkInfo["PositionCode"], Is.EqualTo("Lover"));
@@ -428,7 +439,7 @@ namespace TauCode.Db.SqlClient.Tests.DbMigrator
         public void Migrate_SchemaDoesNotExist_ThrowsTauDbException()
         {
             // Arrange
-            this.Connection.CreateSchema("zeta");
+            this.Connection.CreateSchema(TestHelper.SchemaName);
 
             var migrator = new SqlJsonMigrator(
                 this.Connection,

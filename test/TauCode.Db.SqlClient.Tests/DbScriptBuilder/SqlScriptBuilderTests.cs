@@ -15,7 +15,7 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         [SetUp]
         public void SetUp()
         {
-            this.Connection.CreateSchema("zeta");
+            this.Connection.CreateSchema(TestHelper.SchemaName);
 
             var sql = this.GetType().Assembly.GetResourceText("crebase.sql", true);
             this.Connection.ExecuteCommentedScript(sql);
@@ -24,8 +24,8 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         private void AssertCorruptedTableAction(Action<TableMold> action)
         {
             // Arrange
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "HealthInfo");
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "HealthInfo");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
             var table = tableInspector.GetTable();
 
@@ -390,10 +390,10 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildCreateTableScript_IncludeConstraints_ReturnsValidScript(char delimiter)
         {
             // Arrange
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "TaxInfo");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "TaxInfo");
             var table = tableInspector.GetTable();
 
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
             scriptBuilder.CurrentOpeningIdentifierDelimiter = delimiter;
 
             string scriptName = "BuildCreateTableScript_Brackets.sql";
@@ -408,10 +408,10 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
 
             var expectedSql = this.GetType().Assembly.GetResourceText(scriptName, true);
 
-            this.Connection.DropTable("zeta", "TaxInfo");
+            this.Connection.DropTable(TestHelper.SchemaName, "TaxInfo");
             this.Connection.ExecuteSingleSql(sql);
 
-            IDbTableInspector tableInspector2 = new SqlTableInspector(this.Connection, "zeta", "TaxInfo");
+            IDbTableInspector tableInspector2 = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "TaxInfo");
             var table2 = tableInspector2.GetTable();
 
             var json = JsonConvert.SerializeObject(table);
@@ -428,10 +428,10 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildCreateTableScript_DoNotIncludeConstraints_ReturnsValidScript(char delimiter)
         {
             // Arrange
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "TaxInfo");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "TaxInfo");
             var table = tableInspector.GetTable();
 
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
             scriptBuilder.CurrentOpeningIdentifierDelimiter = delimiter;
 
             string scriptName = "BuildCreateTableScript_NoConstraints_Brackets.sql";
@@ -446,7 +446,7 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
 
             var expectedSql = this.GetType().Assembly.GetResourceText(scriptName, true);
 
-            this.Connection.DropTable("zeta", "TaxInfo");
+            this.Connection.DropTable(TestHelper.SchemaName, "TaxInfo");
             this.Connection.ExecuteSingleSql(sql);
 
             // Assert
@@ -457,7 +457,7 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildCreateTableScript_TableMoldIsNull_ThrowsArgumentNullException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
             // Act
             var ex = Assert.Throws<ArgumentNullException>(() => scriptBuilder.BuildCreateTableScript(null, true));
@@ -469,7 +469,7 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         [Test]
         public void BuildCreateTableScript_TableMoldIsCorrupted_ThrowsArgumentException()
         {
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
             this.AssertCorruptedTableAction(x => scriptBuilder.BuildCreateTableScript(x, true));
         }
@@ -484,11 +484,11 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildCreateIndexScript_UniqueIndex_ReturnsValidScript(char delimiter)
         {
             // Arrange
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "WorkInfo");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "WorkInfo");
             var table = tableInspector.GetTable();
             var index = table.Indexes.Single(x => x.Name == "UX_workInfo_Hash");
 
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta")
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName)
             {
                 CurrentOpeningIdentifierDelimiter = delimiter,
             };
@@ -517,11 +517,11 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildCreateIndexScript_NonUniqueIndex_ReturnsValidScript(char delimiter)
         {
             // Arrange
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "HealthInfo");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "HealthInfo");
             var table = tableInspector.GetTable();
             var index = table.Indexes.Single(x => x.Name == "IX_healthInfo_metricAmetricB");
 
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta")
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName)
             {
                 CurrentOpeningIdentifierDelimiter = delimiter,
             };
@@ -548,7 +548,7 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildCreateIndexScript_IndexIsNull_ThrowsArgumentNullException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
             // Act
             var ex = Assert.Throws<ArgumentNullException>(() => scriptBuilder.BuildCreateIndexScript(null));
@@ -561,11 +561,11 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildCreateIndexScript_IndexIsCorrupted_ThrowsArgumentException()
         {
             // Arrange
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "HealthInfo");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "HealthInfo");
             var table = tableInspector.GetTable();
             var index = table.Indexes.Single(x => x.Name == "IX_healthInfo_metricAmetricB");
 
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
             // Act
             // corrupted: index name is null
@@ -617,7 +617,7 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildDropTableScript_ValidArgument_ReturnsValidScript(char delimiter)
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta")
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName)
             {
                 CurrentOpeningIdentifierDelimiter = delimiter,
             };
@@ -642,7 +642,7 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildDropTableScript_TableNameIsNull_ThrowsArgumentNullException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
             // Act
             var ex = Assert.Throws<ArgumentNullException>(() => scriptBuilder.BuildDropTableScript(null));
@@ -661,12 +661,12 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildInsertScript_ValidArguments_ReturnsValidScript(char delimiter)
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta")
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName)
             {
                 CurrentOpeningIdentifierDelimiter = delimiter,
             };
 
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "Person");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "Person");
             var table = tableInspector.GetTable();
 
             var columnToParameterMappings = new Dictionary<string, string>
@@ -704,12 +704,12 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildInsertScript_ColumnToParameterMappingsIsEmpty_ReturnsValidScript(char delimiter)
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta")
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName)
             {
                 CurrentOpeningIdentifierDelimiter = delimiter,
             };
 
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "Person");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "Person");
             var table = tableInspector.GetTable();
 
             var columnToParameterMappings = new Dictionary<string, string>();
@@ -736,12 +736,12 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
             char delimiter)
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta")
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName)
             {
                 CurrentOpeningIdentifierDelimiter = delimiter,
             };
 
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "Person");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "Person");
             var table = tableInspector.GetTable();
 
             var columnToParameterMappings = new Dictionary<string, string>
@@ -770,7 +770,7 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildInsertScript_TableMoldIsNull_ThrowsArgumentNullException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
             // Act
             var ex = Assert.Throws<ArgumentNullException>(() =>
@@ -783,7 +783,7 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         [Test]
         public void BuildInsertScript_TableMoldIsCorrupted_ThrowsArgumentException()
         {
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
             var columnToParameterMappings = new Dictionary<string, string>();
 
@@ -794,8 +794,8 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildInsertScript_ColumnToParameterMappingsIsNull_ThrowsArgumentNullException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "Person");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "Person");
             var table = tableInspector.GetTable();
 
             // Act
@@ -809,8 +809,8 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildInsertScript_ColumnToParameterMappingsIsCorrupted_ThrowsArgumentNullException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "Person");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "Person");
             var table = tableInspector.GetTable();
 
             var columnToParameterMappings = new Dictionary<string, string>
@@ -849,12 +849,12 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildUpdateScript_ValidArguments_ReturnsValidScript(char delimiter)
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta")
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName)
             {
                 CurrentOpeningIdentifierDelimiter = delimiter,
             };
 
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "PersonData");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "PersonData");
             var table = tableInspector.GetTable();
 
             var columnToParameterMappings = new Dictionary<string, string>
@@ -889,9 +889,9 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildUpdateScript_MappingsIncomplete_ThrowsArgumentException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "PersonData");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "PersonData");
             var table = tableInspector.GetTable();
 
             var columnToParameterMappings = new Dictionary<string, string>
@@ -946,10 +946,10 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildUpdateScript_TableDoesNotContainPrimaryKey_ThrowsArgumentException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
             this.Connection.ExecuteSingleSql("CREATE TABLE [zeta].[dummy](Foo int)"); // no PK
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "dummy");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "dummy");
             var table = tableInspector.GetTable();
 
             var columnToParameterMappings = new Dictionary<string, string>
@@ -971,8 +971,8 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildUpdateScript_PrimaryKeyIsMultiColumn_ThrowsArgumentException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "Person");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "Person");
             var table = tableInspector.GetTable();
 
             var columnToParameterMappings = new Dictionary<string, string>
@@ -998,7 +998,7 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildUpdateScript_TableIsNull_ThrowsArgumentNullException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
             var columnToParameterMappings = new Dictionary<string, string>
             {
@@ -1021,7 +1021,7 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         [Test]
         public void BuildUpdateScript_TableIsCorrupted_ThrowsArgumentNullException()
         {
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
             var columnToParameterMappings = new Dictionary<string, string>
             {
@@ -1037,9 +1037,9 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildUpdateScript_ColumnToParameterMappingsIsNull_ThrowsArgumentNullException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "PersonData");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "PersonData");
             var table = tableInspector.GetTable();
 
             // Act
@@ -1053,9 +1053,9 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildUpdateScript_ColumnToParameterMappingsIsCorrupted_ThrowsArgumentNullException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "PersonData");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "PersonData");
             var table = tableInspector.GetTable();
 
             var columnToParameterMappings = new Dictionary<string, string>
@@ -1095,12 +1095,12 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildSelectByPrimaryKeyScript_ValidArguments_ReturnsValidScript(char delimiter)
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta")
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName)
             {
                 CurrentOpeningIdentifierDelimiter = delimiter,
             };
 
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "PersonData");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "PersonData");
             var table = tableInspector.GetTable();
 
             var columns = new[]
@@ -1139,12 +1139,12 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildSelectByPrimaryKeyScript_ColumnSelectorIsNull_ReturnsValidScript(char delimiter)
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta")
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName)
             {
                 CurrentOpeningIdentifierDelimiter = delimiter,
             };
 
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "PersonData");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "PersonData");
             var table = tableInspector.GetTable();
 
             // Act
@@ -1169,10 +1169,10 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildSelectByPrimaryKeyScript_TableDoesNotContainPrimaryKey_ThrowsArgumentException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
             this.Connection.ExecuteSingleSql("CREATE TABLE [zeta].[dummy](Foo int)"); // no PK
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "dummy");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "dummy");
             var table = tableInspector.GetTable();
 
             // Act
@@ -1189,8 +1189,8 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildSelectByPrimaryKeyScript_PrimaryKeyIsMultiColumn_ThrowsArgumentException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "Person");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "Person");
             var table = tableInspector.GetTable();
 
             // Act
@@ -1207,9 +1207,9 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildSelectByPrimaryKeyScript_PrimaryKeyParameterNameIsNull_ThrowsArgumentNullException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "PersonData");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "PersonData");
             var table = tableInspector.GetTable();
 
             var columns = new[]
@@ -1236,9 +1236,9 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildSelectByPrimaryKeyScript_NoColumnsSelected_ThrowsArgumentException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "PersonData");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "PersonData");
             var table = tableInspector.GetTable();
 
             // Act
@@ -1254,7 +1254,7 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildSelectByPrimaryKeyScript_TableIsNull_ThrowsArgumentNullException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
             // Act
             var ex = Assert.Throws<ArgumentNullException>((() =>
@@ -1267,7 +1267,7 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         [Test]
         public void BuildSelectByPrimaryKeyScript_TableIsCorrupted_ThrowsArgumentNullException()
         {
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
             this.AssertCorruptedTableAction(mold => scriptBuilder.BuildSelectByPrimaryKeyScript(mold, "p_id", null));
         }
@@ -1282,12 +1282,12 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildSelectAllScript_ValidArguments_ReturnsValidScript(char delimiter)
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta")
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName)
             {
                 CurrentOpeningIdentifierDelimiter = delimiter,
             };
 
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "PersonData");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "PersonData");
             var table = tableInspector.GetTable();
 
             var columns = new[]
@@ -1326,12 +1326,12 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildSelectAllScript_ColumnSelectorIsNull_ReturnsValidScript(char delimiter)
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta")
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName)
             {
                 CurrentOpeningIdentifierDelimiter = delimiter,
             };
 
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "PersonData");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "PersonData");
             var table = tableInspector.GetTable();
 
             // Act
@@ -1356,9 +1356,9 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildSelectAllScript_NoColumnsSelected_ThrowsArgumentException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "PersonData");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "PersonData");
             var table = tableInspector.GetTable();
 
             // Act
@@ -1374,7 +1374,7 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildSelectAllScript_TableIsNull_ThrowsArgumentNullException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
             // Act
             var ex = Assert.Throws<ArgumentNullException>((() =>
@@ -1387,7 +1387,7 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         [Test]
         public void BuildSelectAllScript_TableIsCorrupted_ThrowsArgumentNullException()
         {
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
             this.AssertCorruptedTableAction(mold => scriptBuilder.BuildSelectAllScript(mold, null));
         }
@@ -1402,12 +1402,12 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildDeleteByPrimaryKeyScript_ValidArguments_ReturnsValidScript(char delimiter)
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta")
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName)
             {
                 CurrentOpeningIdentifierDelimiter = delimiter,
             };
 
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "PersonData");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "PersonData");
             var table = tableInspector.GetTable();
             
             // Act
@@ -1430,10 +1430,10 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildDeleteByPrimaryKeyScript_TableHasNoPrimaryKey_ThrowsArgumentException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
             this.Connection.ExecuteSingleSql("CREATE TABLE [zeta].[dummy](Foo int)"); // no PK
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "dummy");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "dummy");
             var table = tableInspector.GetTable();
 
             // Act
@@ -1450,8 +1450,8 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildDeleteByPrimaryKeyScript_PrimaryKeyIsMultiColumn_ThrowsArgumentException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "Person");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "Person");
             var table = tableInspector.GetTable();
 
             // Act
@@ -1468,9 +1468,9 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildDeleteByPrimaryKeyScript_PrimaryKeyParameterNameIsNull_ThrowsArgumentNullException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
-            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, "zeta", "PersonData");
+            IDbTableInspector tableInspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "PersonData");
             var table = tableInspector.GetTable();
 
             // Act
@@ -1485,7 +1485,7 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildDeleteByPrimaryKeyScript_TableIsNull_ThrowsArgumentNullException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
             // Act
             var ex = Assert.Throws<ArgumentNullException>((() =>
@@ -1498,7 +1498,7 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         [Test]
         public void BuildDeleteByPrimaryKeyScript_TableIsCorrupted_ThrowsArgumentNullException()
         {
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
             this.AssertCorruptedTableAction(mold => scriptBuilder.BuildDeleteByPrimaryKeyScript(mold, "p_id"));
         }
@@ -1513,7 +1513,7 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildDeleteScript_ValidArgument_ReturnsValidScript(char delimiter)
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta")
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName)
             {
                 CurrentOpeningIdentifierDelimiter = delimiter,
             };
@@ -1540,7 +1540,7 @@ namespace TauCode.Db.SqlClient.Tests.DbScriptBuilder
         public void BuildDeleteScript_TableNameIsNull_ThrowsArgumentNullException()
         {
             // Arrange
-            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder("zeta");
+            IDbScriptBuilder scriptBuilder = new SqlScriptBuilder(TestHelper.SchemaName);
 
             // Act
             var ex = Assert.Throws<ArgumentNullException>((() =>

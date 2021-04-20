@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Data.SqlClient;
-using NUnit.Framework;
 using TauCode.Db.Exceptions;
 using TauCode.Db.Model;
 using TauCode.Extensions;
@@ -15,7 +15,7 @@ namespace TauCode.Db.SqlClient.Tests.DbTableInspector
         [SetUp]
         public void SetUp()
         {
-            this.Connection.CreateSchema("zeta");
+            this.Connection.CreateSchema(TestHelper.SchemaName);
 
             var sql = this.GetType().Assembly.GetResourceText("crebase.sql", true);
             this.Connection.ExecuteCommentedScript(sql);
@@ -146,7 +146,7 @@ namespace TauCode.Db.SqlClient.Tests.DbTableInspector
 
             // Act
             var dictionary = tableNames
-                .Select(x => new SqlTableInspector(this.Connection, "zeta", x))
+                .Select(x => new SqlTableInspector(this.Connection, TestHelper.SchemaName, x))
                 .ToDictionary(x => x.TableName, x => x.GetColumns());
 
             // Assert
@@ -295,7 +295,7 @@ namespace TauCode.Db.SqlClient.Tests.DbTableInspector
         public void GetColumns_TableDoesNotExist_ThrowsTauDbException()
         {
             // Arrange
-            IDbTableInspector inspector = new SqlTableInspector(this.Connection, "zeta", "bad_table");
+            IDbTableInspector inspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "bad_table");
 
             // Act
             var ex = Assert.Throws<TauDbException>(() => inspector.GetColumns());
@@ -312,11 +312,11 @@ namespace TauCode.Db.SqlClient.Tests.DbTableInspector
         public void GetPrimaryKey_ValidInput_ReturnsPrimaryKey()
         {
             // Arrange
-            var tableNames = this.Connection.GetTableNames("zeta", true);
+            var tableNames = this.Connection.GetTableNames(TestHelper.SchemaName, true);
 
             // Act
             var dictionary = tableNames
-                .Select(x => new SqlTableInspector(this.Connection, "zeta", x))
+                .Select(x => new SqlTableInspector(this.Connection, TestHelper.SchemaName, x))
                 .ToDictionary(x => x.TableName, x => x.GetPrimaryKey());
 
             // Assert
@@ -374,7 +374,7 @@ namespace TauCode.Db.SqlClient.Tests.DbTableInspector
         public void GetPrimaryKey_TableDoesNotExist_ThrowsTauDbException()
         {
             // Arrange
-            IDbTableInspector inspector = new SqlTableInspector(this.Connection, "zeta", "bad_table");
+            IDbTableInspector inspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "bad_table");
 
             // Act
             var ex = Assert.Throws<TauDbException>(() => inspector.GetPrimaryKey());
@@ -391,7 +391,7 @@ namespace TauCode.Db.SqlClient.Tests.DbTableInspector
         public void GetForeignKeys_ValidInput_ReturnsForeignKeys()
         {
             // Arrange
-            IDbTableInspector inspector = new SqlTableInspector(this.Connection, "zeta", "PersonData");
+            IDbTableInspector inspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "PersonData");
 
             // Act
             var foreignKeys = inspector.GetForeignKeys();
@@ -427,7 +427,7 @@ namespace TauCode.Db.SqlClient.Tests.DbTableInspector
         public void GetForeignKeys_TableDoesNotExist_ThrowsTauDbException()
         {
             // Arrange
-            IDbTableInspector inspector = new SqlTableInspector(this.Connection, "zeta", "bad_table");
+            IDbTableInspector inspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "bad_table");
 
             // Act
             var ex = Assert.Throws<TauDbException>(() => inspector.GetForeignKeys());
@@ -444,9 +444,9 @@ namespace TauCode.Db.SqlClient.Tests.DbTableInspector
         public void GetIndexes_ValidInput_ReturnsIndexes()
         {
             // Arrange
-            IDbTableInspector inspector1 = new SqlTableInspector(this.Connection, "zeta", "Person");
-            IDbTableInspector inspector2 = new SqlTableInspector(this.Connection, "zeta", "WorkInfo");
-            IDbTableInspector inspector3 = new SqlTableInspector(this.Connection, "zeta", "HealthInfo");
+            IDbTableInspector inspector1 = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "Person");
+            IDbTableInspector inspector2 = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "WorkInfo");
+            IDbTableInspector inspector3 = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "HealthInfo");
 
             // Act
             var indexes1 = inspector1.GetIndexes();
@@ -546,7 +546,7 @@ namespace TauCode.Db.SqlClient.Tests.DbTableInspector
         public void GetIndexes_TableDoesNotExist_ThrowsTauDbException()
         {
             // Arrange
-            IDbTableInspector inspector = new SqlTableInspector(this.Connection, "zeta", "bad_table");
+            IDbTableInspector inspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "bad_table");
 
             // Act
             var ex = Assert.Throws<TauDbException>(() => inspector.GetForeignKeys());
@@ -563,7 +563,7 @@ namespace TauCode.Db.SqlClient.Tests.DbTableInspector
         public void GetTable_ValidInput_ReturnsTable()
         {
             // Arrange
-            IDbTableInspector inspector = new SqlTableInspector(this.Connection, "zeta", "HealthInfo");
+            IDbTableInspector inspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "HealthInfo");
 
             // Act
             var table = inspector.GetTable();
@@ -689,7 +689,7 @@ namespace TauCode.Db.SqlClient.Tests.DbTableInspector
         public void GetTable_TableDoesNotExist_ThrowsTauDbException()
         {
             // Arrange
-            IDbTableInspector inspector = new SqlTableInspector(this.Connection, "zeta", "bad_table");
+            IDbTableInspector inspector = new SqlTableInspector(this.Connection, TestHelper.SchemaName, "bad_table");
 
             // Act
             var ex = Assert.Throws<TauDbException>(() => inspector.GetTable());

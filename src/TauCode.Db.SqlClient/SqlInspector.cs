@@ -1,5 +1,4 @@
-﻿using System.Data;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 
 namespace TauCode.Db.SqlClient
 {
@@ -13,8 +12,5 @@ namespace TauCode.Db.SqlClient
         protected SqlConnection SqlConnection => (SqlConnection)this.Connection;
 
         public override IDbUtilityFactory Factory => SqlUtilityFactory.Instance;
-
-        protected override IDbSchemaExplorer CreateSchemaExplorer(IDbConnection connection) =>
-            new SqlSchemaExplorer(this.SqlConnection);
     }
 }

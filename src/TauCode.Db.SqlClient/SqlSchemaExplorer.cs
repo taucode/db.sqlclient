@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Data.SqlClient;
+using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Data.SqlClient;
 using TauCode.Db.Model;
 using TauCode.Extensions;
 
@@ -44,6 +44,7 @@ WHERE
             var objectId = (int)objectResult;
             return objectId;
         }
+
         protected override ColumnMold ColumnInfoToColumn(ColumnInfo columnInfo)
         {
             var column = new ColumnMold
