@@ -1,0 +1,133 @@
+﻿// default system watcher id: a637d99f-6af9-40e8-b1c5-865f7ca5e468
+{
+  "watcher": [
+    {
+      "id": 11, // Acme system watcher
+      "guid": "76171ae7-cc87-4803-86e7-0141480dc1d5"
+    },
+    {
+      "id": 12, // Foo system watcher
+      "guid": "17fefec2-e5f8-40e9-a4eb-d3db1da009e2"
+    },
+    {
+      "id": 100101, // ak
+      "guid": "ca2c8f0a-00eb-49a3-b495-cd14fe830b0f"
+    },
+    {
+      "id": 100102, // olia
+      "guid": "54bdcb8b-f3d9-4944-97d6-e5716dc1fe66"
+    }
+  ],
+  
+  "system_watcher": [
+    {
+      "watcher_id": 11, // Acme system watcher
+      "code": "acme"
+    },
+    {
+      "watcher_id": 12, // Foo system watcher
+      "code": "foo"
+    }
+  ],
+
+  "quote": [
+    // begin: acme initial quotes; portfolio is "USD", "EUR", "UAH", "NOK"
+    {
+      "id": 300101,
+      "watcher_id": 11,
+      "currency_id": 9001, // USD
+      "date": "1900-01-01Z",
+      "is_basic": true,
+      "rate": 1.0,
+      "system_watcher_id": null
+    },
+    {
+      "id": 300102,
+      "watcher_id": 11,
+      "currency_id": 9002, // EUR
+      "date": "1900-01-01Z",
+      "is_basic": false,
+      "rate": 0.88161,
+      "system_watcher_id": null
+    },
+    {
+      "id": 300103,
+      "watcher_id": 11,
+      "currency_id": 9003, // UAH
+      "date": "1900-01-01Z",
+      "is_basic": false,
+      "rate": 26.976014,
+      "system_watcher_id": null
+    },
+    {
+      "id": 300104,
+      "watcher_id": 11,
+      "currency_id": 9009, // NOK
+      "date": "1900-01-01Z",
+      "is_basic": false,
+      "rate": 8.51188,
+      "system_watcher_id": null
+    },
+    // end: acme initial quotes
+    // begin: foo initial quotes; portfolio is "USD", "SEK", "JPY"
+    {
+      "id": 300105,
+      "watcher_id": 12,
+      "currency_id": 9001, // USD
+      "date": "1900-01-01Z",
+      "is_basic": true,
+      "rate": 1.0,
+      "system_watcher_id": null
+    },
+    {
+      "id": 300106,
+      "watcher_id": 12,
+      "currency_id": 9010, // SEK
+      "date": "1900-01-01Z",
+      "is_basic": false,
+      "rate": 9.216232,
+      "system_watcher_id": null
+    },
+    {
+      "id": 300107,
+      "watcher_id": 12,
+      "currency_id": 9079, // JPY
+      "date": "1900-01-01Z",
+      "is_basic": false,
+      "rate": 110.093379,
+      "system_watcher_id": null
+    },
+    // end: acme initial quotes
+    // begin: ak initial quotes; portfolio is "UAH", "EUR"
+    {
+      "id": 300108,
+      "watcher_id": 100101,
+      "currency_id": 9003, // UAH
+      "date": "1900-01-01Z",
+      "is_basic": true,
+      "rate": 1.0,
+      "system_watcher_id": null
+    },
+    {
+      "id": 300109,
+      "watcher_id": 100101,
+      "currency_id": 9002, // EUR
+      "date": "1900-01-01Z",
+      "is_basic": false,
+      "rate": null,
+      "system_watcher_id": 1
+    },
+    // end: ak initial quotes
+    // begin: olia initial quotes; portfolio is "USD"
+    {
+      "id": 300110,
+      "watcher_id": 100102,
+      "currency_id": 9001, // USD
+      "date": "1900-01-01Z",
+      "is_basic": true,
+      "rate": 1.0,
+      "system_watcher_id": null
+    }
+    // end: olia initial quotes
+  ]
+}

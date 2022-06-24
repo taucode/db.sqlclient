@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX [UX_workInfo_Hash] ON [zeta].[WorkInfo]([Hash] ASC)
