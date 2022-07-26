@@ -9,7 +9,7 @@ namespace TauCode.Db.SqlClient.Tests
 {
     internal static class TestHelper
     {
-        internal const string ConnectionString = @"Server=.\mssqltest;Database=rho.test;Trusted_Connection=True;";
+        internal const string ConnectionString = @"Server=.\mssqltest;Database=rho.test;Trusted_Connection=True;TrustServerCertificate=True";
 
         internal const string SchemaName = "zeta";
 
