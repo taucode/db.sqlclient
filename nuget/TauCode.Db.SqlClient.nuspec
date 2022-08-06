@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>TauCode.Db.SqlClient</id>
-    <version>1.3.8-alpha.1.2022-07-26.17-22</version>
+    <version>1.5.0-alpha.1.2022-08-06.10-29</version>
     <authors>TauCode</authors>
     <owners>TauCode</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -13,19 +13,18 @@
       SQL Server-specific database functionality
     </description>
     <releaseNotes>
-      Release 1.3.7.
+      Developing release 1.5.0.
     </releaseNotes>
     <tags>taucode db database sql server</tags>
     <dependencies>
-      <group targetFramework=".NETStandard2.1">
-        <dependency id="Microsoft.Data.SqlClient" version="4.1.0" />
-        <dependency id="TauCode.Db" version="1.3.7" />
+      <group targetFramework=".NETCoreApp6.0">
+        <dependency id="Microsoft.Data.SqlClient" version="5.0.0" />
+        <dependency id="TauCode.Db" version="1.5.0" />
       </group>
     </dependencies>
   </metadata>
   <files>
     <file src="..\LICENSE*" target="" />
-    <file src="..\src\TauCode.Db.SqlClient\bin\Release\netstandard2.1\TauCode.Db.SqlClient.dll" target="lib\netstandard2.1" />
-    <file src="..\src\TauCode.Db.SqlClient\bin\Release\netstandard2.1\TauCode.Db.SqlClient.pdb" target="lib\netstandard2.1" />
+    <file src="..\src\TauCode.Db.SqlClient\bin\Release\net6.0\TauCode.Db.SqlClient.dll" target="lib\net6.0" />
   </files>
 </package>
