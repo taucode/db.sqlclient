@@ -1,12 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30517.126
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{0225E9B7-ED8A-4BE0-BE0E-B47F5B434BED}"
 	ProjectSection(SolutionItems) = preProject
 		build\azure-pipelines-dev.yml = build\azure-pipelines-dev.yml
-		build\azure-pipelines.yml = build\azure-pipelines.yml
+		build\azure-pipelines-main.yml = build\azure-pipelines-main.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{F792D607-013B-404D-9E8B-A32680797096}"
@@ -26,7 +26,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{1666DA14-D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TauCode.Db.SqlClient", "src\TauCode.Db.SqlClient\TauCode.Db.SqlClient.csproj", "{893DBD41-D6CA-4111-9A82-7D42F37BE27D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TauCode.Db.SqlClient.Tests", "test\TauCode.Db.SqlClient.Tests\TauCode.Db.SqlClient.Tests.csproj", "{62C6528E-64FC-4964-81C5-EACB3F466F3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TauCode.Db.SqlClient.Tests", "test\TauCode.Db.SqlClient.Tests\TauCode.Db.SqlClient.Tests.csproj", "{62C6528E-64FC-4964-81C5-EACB3F466F3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
