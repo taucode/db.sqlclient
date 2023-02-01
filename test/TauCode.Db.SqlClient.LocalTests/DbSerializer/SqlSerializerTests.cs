@@ -1,18 +1,15 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Data;
+using Microsoft.Data.SqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using TauCode.Db.Data;
 using TauCode.Db.DbValueConverters;
 using TauCode.Db.Exceptions;
 using TauCode.Extensions;
 
-namespace TauCode.Db.SqlClient.Tests.DbSerializer
+namespace TauCode.Db.SqlClient.LocalTests.DbSerializer
 {
     [TestFixture]
     public class SqlSerializerTests : TestBase

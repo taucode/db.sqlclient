@@ -1,9 +1,8 @@
-﻿using System;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using NUnit.Framework;
 using TauCode.Db.Exceptions;
 
-namespace TauCode.Db.SqlClient.Tests.DbInspector
+namespace TauCode.Db.SqlClient.LocalTests.DbInspector
 {
     [TestFixture]
     public class SqlInspectorTests : TestBase

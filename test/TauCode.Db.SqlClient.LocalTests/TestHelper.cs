@@ -1,11 +1,8 @@
-﻿using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.Text;
+using Microsoft.Data.SqlClient;
 using TauCode.Db.Extensions;
 
-namespace TauCode.Db.SqlClient.Tests
+namespace TauCode.Db.SqlClient.LocalTests
 {
     internal static class TestHelper
     {

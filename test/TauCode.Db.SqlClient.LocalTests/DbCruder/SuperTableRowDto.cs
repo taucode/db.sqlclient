@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TauCode.Db.SqlClient.Tests.DbCruder.Dto
+﻿namespace TauCode.Db.SqlClient.LocalTests.DbCruder
 {
     public class SuperTableRowDto
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using NUnit.Framework;
 
-namespace TauCode.Db.SqlClient.Tests
+namespace TauCode.Db.SqlClient.LocalTests
 {
     [TestFixture]
     public abstract class TestBase

@@ -1,12 +1,11 @@
 ﻿using Microsoft.Data.SqlClient;
 using NUnit.Framework;
-using System;
 using TauCode.Db.Data;
 using TauCode.Db.Exceptions;
 using TauCode.Db.Extensions;
 using TauCode.Extensions;
 
-namespace TauCode.Db.SqlClient.Tests.DbMigrator
+namespace TauCode.Db.SqlClient.LocalTests.DbMigrator
 {
     [TestFixture]
     public class SqlJsonMigratorTests : TestBase
