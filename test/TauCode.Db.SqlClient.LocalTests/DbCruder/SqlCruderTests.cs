@@ -1,19 +1,15 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System.Text;
+using Microsoft.Data.SqlClient;
 using Moq;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TauCode.Db.Data;
 using TauCode.Db.DbValueConverters;
 using TauCode.Db.Exceptions;
 using TauCode.Db.Model;
-using TauCode.Db.SqlClient.Tests.DbCruder.Dto;
 using TauCode.Extensions;
 
-namespace TauCode.Db.SqlClient.Tests.DbCruder
+namespace TauCode.Db.SqlClient.LocalTests.DbCruder
 {
     [TestFixture]
     public class SqlCruderTests : TestBase

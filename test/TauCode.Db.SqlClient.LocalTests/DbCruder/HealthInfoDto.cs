@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TauCode.Db.SqlClient.Tests.DbCruder
+﻿namespace TauCode.Db.SqlClient.LocalTests.DbCruder
 {
     public class HealthInfoDto
     {

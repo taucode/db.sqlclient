@@ -1,12 +1,10 @@
 ﻿using Microsoft.Data.SqlClient;
 using NUnit.Framework;
-using System;
-using System.Linq;
 using TauCode.Db.Data;
 using TauCode.Db.Extensions;
 using TauCode.Extensions;
 
-namespace TauCode.Db.SqlClient.Tests.EconeraTesting
+namespace TauCode.Db.SqlClient.LocalTests.EconeraTesting
 {
     [TestFixture]
     public class EconeraTests

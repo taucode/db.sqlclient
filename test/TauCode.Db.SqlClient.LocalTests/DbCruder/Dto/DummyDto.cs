@@ -1,4 +1,4 @@
-﻿namespace TauCode.Db.SqlClient.Tests.DbCruder.Dto
+﻿namespace TauCode.Db.SqlClient.LocalTests.DbCruder.Dto
 {
     public class DummyDto
     {

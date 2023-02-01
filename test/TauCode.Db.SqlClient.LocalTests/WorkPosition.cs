@@ -1,4 +1,4 @@
-﻿namespace TauCode.Db.SqlClient.Tests
+﻿namespace TauCode.Db.SqlClient.LocalTests
 {
     public enum WorkPosition
     {

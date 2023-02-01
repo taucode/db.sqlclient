@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TauCode.Db.SqlClient.Tests.DbTableInspector
+﻿namespace TauCode.Db.SqlClient.LocalTests.DbTableInspector
 {
     public class ColumnIdentityMoldInfo : IEquatable<ColumnIdentityMoldInfo>
     {
