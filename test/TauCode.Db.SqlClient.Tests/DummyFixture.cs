@@ -3,7 +3,7 @@
 namespace TauCode.Db.SqlClient.Tests;
 
 [TestFixture]
-public class DbSqlClientDummyFixture
+public class DummyFixture
 {
     [Test]
     public void DummyTest()
