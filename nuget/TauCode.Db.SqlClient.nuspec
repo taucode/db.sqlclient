@@ -2,24 +2,24 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>TauCode.Db.SqlClient</id>
-    <version>1.7.2-alpha.1.2023-02-01.14-40</version>
+    <version>1.8.1-alpha.1.2023-04-08.16-21</version>
     <authors>TauCode</authors>
     <owners>TauCode</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="file">LICENSE</license>
-    <projectUrl>https://github.com/taucode/taucode.db.sqlclient</projectUrl>
-    <repository type="git" url="https://github.com/taucode/taucode.db.sqlclient"/>
+    <projectUrl>https://github.com/taucode/db.sqlclient</projectUrl>
+    <repository type="git" url="https://github.com/taucode/db.sqlclient"/>
     <description>
       SQL Server-specific database functionality
     </description>
     <releaseNotes>
-      Preparing release 1.7.2.
+      Developing release 1.8.1.
     </releaseNotes>
     <tags>taucode db database sql server</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp6.0">
         <dependency id="Microsoft.Data.SqlClient" version="5.1.0" />
-        <dependency id="TauCode.Db" version="1.7.0" />
+        <dependency id="TauCode.Db" version="1.8.1-alpha.1.2023-04-08.16-21" />
       </group>
     </dependencies>
   </metadata>
