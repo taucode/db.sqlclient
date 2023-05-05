@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.0" />
-    <PackageReference Include="TauCode.Db" Version="1.8.1-alpha.1.2023-04-08.16-21" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.1" />
+    <PackageReference Include="TauCode.Db" Version="1.9.1-alpha.1.2023-05-05.12-00" />
   </ItemGroup>
 
 </Project>

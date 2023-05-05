@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>TauCode.Db.SqlClient</id>
-    <version>1.8.1-alpha.1.2023-04-08.16-21</version>
+    <version>1.9.1-alpha.1.2023-05-05.10-00</version>
     <authors>TauCode</authors>
     <owners>TauCode</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -13,13 +13,13 @@
       SQL Server-specific database functionality
     </description>
     <releaseNotes>
-      Developing release 1.8.1.
+      Developing release 1.9.1.
     </releaseNotes>
     <tags>taucode db database sql server</tags>
     <dependencies>
       <group targetFramework=".NETCoreApp6.0">
-        <dependency id="Microsoft.Data.SqlClient" version="5.1.0" />
-        <dependency id="TauCode.Db" version="1.8.1-alpha.1.2023-04-08.16-21" />
+        <dependency id="Microsoft.Data.SqlClient" version="5.1.1" />
+        <dependency id="TauCode.Db" version="1.9.1-alpha.1.2023-05-05.12-00" />
       </group>
     </dependencies>
   </metadata>

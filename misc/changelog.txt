@@ -1,4 +1,8 @@
-﻿2020-09-24
+﻿2023-05-05
+==========
+    1. Ported from lab.
+
+2020-09-24
 ==========
     1. Created this project in order to move SQL Server-specific functions from TauCode.Db libary.
 

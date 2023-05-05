@@ -1,4 +1,8 @@
-﻿2020-09-27
+﻿2023-05-05
+==========
+    1. Fix order of todos and changelog
+
+2020-09-27
 ==========
 +   1. Correct NuSpec, it is missing refs.
 
