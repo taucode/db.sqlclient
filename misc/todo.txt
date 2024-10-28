@@ -2,15 +2,15 @@
 ==========
     1. Fix order of todos and changelog
 
-2020-09-27
+2020-10-05
 ==========
-+   1. Correct NuSpec, it is missing refs.
+    1. Deal with schemas. It produces wrong results now.
 
 2020-09-29
 ==========
     1. Experiment: if open a db connection, and then try change its ConnectionString, what then?
 
-2020-10-05
+2020-09-27
 ==========
-    1. Deal with schemas. It produces wrong results now.
++   1. Correct NuSpec, it is missing refs.
 

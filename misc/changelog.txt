@@ -1,20 +1,13 @@
-﻿2023-05-05
+﻿2024-10-26
+==========
+    1. Resurrected.
+    2. Ported to .NET 8
+
+2023-05-05
 ==========
     1. Ported from lab.
 
-2020-09-24
-==========
-    1. Created this project in order to move SQL Server-specific functions from TauCode.Db libary.
-
-2020-11-12
-==========
-    1. Huge refactoring; schema support
-
-2021-04-04
-==========
-    1. Resurrection.
-
-2021-04-20
+2023-04-08
 ==========
     1. Ported from lab.
 
@@ -22,6 +15,19 @@
 ==========
     1. Winter resurrection - 2023.
 
-2023-04-08
+2021-04-20
 ==========
     1. Ported from lab.
+
+2021-04-04
+==========
+    1. Resurrection.
+
+2020-11-12
+==========
+    1. Huge refactoring; schema support
+
+2020-09-24
+==========
+    1. Created this project in order to move SQL Server-specific functions from TauCode.Db libary.
+
